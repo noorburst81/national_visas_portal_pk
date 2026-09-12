@@ -32,21 +32,8 @@ export default function Home() {
           
           <form onSubmit={handleSubmit} className="space-y-4">
            
-            {/* FIXED: Removed "Living in" and added static label */}
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Select Your Current Country
-            </label>
             <input type="email" placeholder="Email" className="w-full border p-3 rounded-lg" />
             <input type="text" placeholder="Passport Number" className="w-full border p-3 rounded-lg" />
-            
-            <select className="w-full border p-3 rounded-lg">
-              <option>🇵🇰 Pakistan</option>
-              <option>🇦🇪 UAE / Dubai</option>
-              <option>🇸🇦 Saudi Arabia</option>
-              <option>🇬🇧 United Kingdom</option>
-              <option>🇺🇸 USA</option>
-              <option>🇨🇦 Canada</option>
-            </select>
 
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Destination Country You Want to Visit
@@ -55,8 +42,9 @@ export default function Home() {
               value={country} 
               onChange={(e) => setCountry(e.target.value)}
               className="w-full border p-3 rounded-lg"
+              required
             >
-              <option value="">Select Country</option>
+              <option value="" disabled hidden>Select Country</option>
               <option value="UAE">🇦🇪 UAE / Dubai - Work & Visit Visa</option>
               <option value="Saudi">🇸🇦 Saudi Arabia - Umrah, Hajj & Work Visa</option>
               <option value="USA">🇺🇸 USA - Tourist, Student & Work Visa</option>
