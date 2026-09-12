@@ -16,12 +16,13 @@ export
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold mb-4 text-wrap">Check Visa Requirements</h2>
           <form className="space-y-4">
-            <option value="" disabled hidden>Your Current Country</option>
+           <label className="block text-sm font-semibold text-gray-700 mb-2">Your Current Country</label>
+            
             <input type="email" placeholder="Email" className="w-full border p-3 rounded-lg" />
             <input type="text" placeholder="Passport Number" className="w-full border p-3 rounded-lg" />
             
             <select className="w-full border p-3 rounded-lg">
-              <option>Your Current Country</option>
+              
               <option>🇵🇰 Living in Pakistan</option>
               <option>🇦🇪 Living in UAE / Dubai</option>
               <option>🇸🇦 Living in Saudi Arabia</option>
