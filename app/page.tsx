@@ -16,7 +16,7 @@ export
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold mb-4 text-wrap">Check Visa Requirements</h2>
           <form className="space-y-4">
-            <input type="text" placeholder="Full Name" className="w-full border p-3 rounded-lg" />
+            <option disabled selected>Your Current Country</option>
             <input type="email" placeholder="Email" className="w-full border p-3 rounded-lg" />
             <input type="text" placeholder="Passport Number" className="w-full border p-3 rounded-lg" />
             
