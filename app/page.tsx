@@ -1,6 +1,5 @@
 // fix v7 final
 import { useState } from "react"
-export import { useState } from "react";
  default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-green-50 to-white p-6">
