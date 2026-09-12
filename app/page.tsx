@@ -1,6 +1,5 @@
 "use client"
 
-// fix v8 final - working
 import { useState } from "react"
 
 export default function Home() {
@@ -33,19 +32,20 @@ export default function Home() {
           
           <form onSubmit={handleSubmit} className="space-y-4">
            
+            {/* FIXED: Removed "Living in" and added static label */}
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Where are you living?
+              Select Your Current Country
             </label>
             <input type="email" placeholder="Email" className="w-full border p-3 rounded-lg" />
             <input type="text" placeholder="Passport Number" className="w-full border p-3 rounded-lg" />
             
             <select className="w-full border p-3 rounded-lg">
-              <option>🇵🇰 Living in Pakistan</option>
-              <option>🇦🇪 Living in UAE / Dubai</option>
-              <option>🇸🇦 Living in Saudi Arabia</option>
+              <option>🇵🇰 Pakistan</option>
+              <option>🇦🇪 UAE / Dubai</option>
+              <option>🇸🇦 Saudi Arabia</option>
               <option>🇬🇧 United Kingdom</option>
-              <option>🇺🇸 Living in USA</option>
-              <option>🇨🇦 Living in Canada</option>
+              <option>🇺🇸 USA</option>
+              <option>🇨🇦 Canada</option>
             </select>
 
             <label className="block text-sm font-semibold text-gray-700 mb-2">
