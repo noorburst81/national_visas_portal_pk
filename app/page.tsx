@@ -1,3 +1,5 @@
+"use client"
+
 // fix v8 final - working
 import { useState } from "react"
 
