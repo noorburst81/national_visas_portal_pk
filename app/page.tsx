@@ -7,11 +7,11 @@ export default function Home() {
           International Visa Portal - For Pakistanis
         </h1>
         <p className="text-center text-gray-600 mb-8">
-          Official Visa Requirements for Pakistani Passport Holders Worldwide
+        <p className="text-center text-gray-600 mb-8 px-4">
         </p>
 
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
-          <h2 className="text-2xl font-bold mb-4">Check Visa Requirements</h2>
+          <h2 className="text-2xl font-bold mb-4 text-wrap">Check Visa Requirements</h2>
           <form className="space-y-4">
             <input type="text" placeholder="Full Name" className="w-full border p-3 rounded-lg" />
             <input type="email" placeholder="Email" className="w-full border p-3 rounded-lg" />
