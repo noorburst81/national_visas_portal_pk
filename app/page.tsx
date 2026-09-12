@@ -14,9 +14,17 @@ export default function Home() {
             <input type="email" placeholder="Email" className="w-full border p-3 rounded-lg" />
             <input type="text" placeholder="Passport Number" className="w-full border p-3 rounded-lg" />
             <select className="w-full border p-3 rounded-lg">
-      <option>Select Destination Country</option>
-<option>USA</option>
-<option>UK</option>
+    <select className="w-full border p-3 rounded-lg">
+  <option>Select Destination Country</option>
+  <option>🇦🇪 UAE / Dubai - Work & Visit Visa</option>
+  <option>🇸🇦 Saudi Arabia - Umrah, Hajj & Work Visa</option>
+  <option>🇺🇸 USA - Tourist, Student & Work Visa</option>
+  <option>🇨🇦 Canada - PR, Study & Visit Visa</option>
+  <option>🇬🇧 UK - Visit, Study & Work Visa</option>
+  <option>🇩🇪 Germany/Schengen - Job & Study Visa</option>
+  <option>🇦🇺 Australia - Study & Skilled Visa</option>
+  <option>🇹🇷 Turkey - Visit & e-Visa</option>
+</select>
 <option>Canada</option>
 <option>Dubai / UAE</option>
 <option>Saudi Arabia</option>
