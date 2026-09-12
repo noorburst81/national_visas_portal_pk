@@ -1,11 +1,11 @@
 import { useState } from "react"
-export 
+export import { useState } from "react";
  default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-green-50 to-white p-6">
       <div className="max-w-4xl mx-auto">
         
-        <h1 className="text-4xl font-bold text-center text-green-700 mb-2">
+        <h1 className="text-4xl font-bold text-center text-green-700 mb-2">const [country, setCountry] = useState("");
           International Visa Portal - For Pakistanis
         </h1>
         const [result, setResult] = useState("")
@@ -16,7 +16,7 @@ export
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold mb-4 text-wrap">Check Visa Requirements</h2>
           <form className="space-y-4">
-           <label className="block text-sm font-semibold text-gray-700 mb-2">Your Current Country</label>
+           <label className="block text-sm font-semibold text-gray-700 mb-2">Your Current Country 1</label>
             
             <input type="email" placeholder="Email" className="w-full border p-3 rounded-lg" />
             <input type="text" placeholder="Passport Number" className="w-full border p-3 rounded-lg" />
