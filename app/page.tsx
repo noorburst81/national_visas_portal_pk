@@ -5,7 +5,9 @@ export default function Home() {
         
         <h1 className="text-4xl font-bold text-center text-green-700 mb-2">
           International Visa Portal - For Pakistanis
+          import { useState } from "react"
         </h1>
+        const [result, setResult] = useState("")
         <p className="text-center text-gray-600 mb-8">
         <p className="text-center text-gray-600 mb-8 px-4">
         </p>
@@ -22,12 +24,13 @@ export default function Home() {
               <option>🇵🇰 Living in Pakistan</option>
               <option>🇦🇪 Living in UAE / Dubai</option>
               <option>🇸🇦 Living in Saudi Arabia</option>
-              <option>🇬🇧 Living in UK</option>
+              <option>🇬🇧 United Kingdom</option>
               <option>🇺🇸 Living in USA</option>
               <option>🇨🇦 Living in Canada</option>
-            </select>
+            <button onClick={() => setResult("Visa info coming soon for this route!")} className="w-full bg-green-600 text-white font-bold py-3 rounded-lg hover:bg-green-700">
 
             <select className="w-full border p-3 rounded-lg">
+              {result && <p className="mt-4 text-center text-green-700 font-semibold">{result}</p>}
               <option>Destination Country You Want to Visit</option>
               <option>🇦🇪 UAE / Dubai - Work & Visit Visa</option>
               <option>🇸🇦 Saudi Arabia - Umrah, Hajj & Work Visa</option>
