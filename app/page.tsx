@@ -4,21 +4,30 @@ export default function Home() {
       <div className="max-w-4xl mx-auto">
         
         <h1 className="text-4xl font-bold text-center text-green-700 mb-2">
-          International Visa Portal - From Pakistan
-        </h1>
-        <p className="text-center text-gray-600 mb-8">
-          Official Visa Requirements & Links to Apply to Any Country
-        </p>
+  International Visa Portal - From Pakistan
+</h1>
+<p className="text-center text-gray-600 mb-8">
+  Official Visa Requirements & Links to Apply to Any Country
+</p>
 
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
-          <h2 className="text-2xl font-bold mb-4">Check Visa Requirements</h2>
-          <form className="space-y-4">
-            <input type="text" placeholder="Full Name" className="w-full border p-3 rounded-lg" />
-            <input type="email" placeholder="Email" className="w-full border p-3 rounded-lg" />
-            <input type="text" placeholder="Passport Number" className="w-full border p-3 rounded-lg" />
-            
-            <select className="w-full border p-3 rounded-lg">
-              <option>Select Destination Country</option>
+<div className="bg-white rounded-2xl shadow-lg p-6">
+  <h2 className="text-2xl font-bold mb-4">Check Visa Requirements</h2>
+  <form className="space-y-4">
+    <input type="text" placeholder="Full Name" className="w-full border p-3 rounded-lg" />
+    <input type="email" placeholder="Email" className="w-full border p-3 rounded-lg" />
+    <input type="text" placeholder="Passport Number" className="w-full border p-3 rounded-lg" />
+    
+    <select className="w-full border p-3 rounded-lg">
+      <option>Select Destination Country</option>
+      <option>🇦🇪 UAE / Dubai - Work & Visit Visa</option>
+      <option>🇸🇦 Saudi Arabia - Umrah, Hajj & Work Visa</option>
+      <option>🇺🇸 USA - Tourist, Student & Work Visa</option>
+      <option>🇨🇦 Canada - PR, Study & Visit Visa</option>
+      <option>🇬🇧 UK - Visit, Study & Work Visa</option>
+      <option>🇩🇪 Germany/Schengen - Job & Study Visa</option>
+      <option>🇦🇺 Australia - Study & Skilled Visa</option>
+      <option>🇹🇷 Turkey - Visit & e-Visa</option>
+    </select>
               <option>🇦🇪 UAE / Dubai - Work & Visit Visa</option>
               <option>🇸🇦 Saudi Arabia - Umrah, Hajj & Work Visa</option>
               <option>🇺🇸 USA - Tourist, Student & Work Visa</option>
