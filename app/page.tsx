@@ -77,8 +77,110 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gray-50">
 
-      {/* HEADER */}
+      {/* HEADER - BIG LOGO */}
       <header className="bg-white shadow-lg sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-green-600 to-green-400 rounded-2xl flex items-center justify
+            <div className="w-16 h-16 bg-gradient-to-br from-green-600 to-green-400 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">IJ</div>
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-800">International Journey & Tours</h1>
+              <p className="text-sm text-gray-500">Your Global Travel Partner • Trusted by 5000+ Pakistanis</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* HERO */}
+      <section className="bg-gradient-to-r from-green-500 to-teal-500 text-white py-16 text-center">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">Explore The World With Us</h2>
+          <p className="text-xl opacity-90 mb-4">Visa • Flights • Umrah • Hajj • International Tours</p>
+        </div>
+      </section>
+
+      <div className="max-w-5xl mx-auto px-4 py-8">
+
+        {/* TABS */}
+        <div className="flex gap-3 mb-8 bg-white p-2 rounded-2xl shadow">
+          <button onClick={() => {setTab("visa"); setShowOffers(false)}} className={`flex-1 p-4 rounded-xl font-semibold ${tab === "visa"? "bg-green-600 text-white shadow-md" : "bg-gray-50 text-gray-700"}`}>🛂 Visa Services</button>
+          <button onClick={() => {setTab("flights"); setShowOffers(false)}} className={`flex-1 p-4 rounded-xl font-semibold ${tab === "flights"? "bg-green-600 text-white shadow-md" : "bg-gray-50 text-gray-700"}`}>✈️ Flight Booking</button>
+          <button onClick={() => {setTab("tours"); setShowOffers(false)}} className={`flex-1 p-4 rounded-xl font-semibold ${tab === "tours"? "bg-green-600 text-white shadow-md" : "bg-gray-50 text-gray-700"}`}>🏝️ Tour Packages</button>
+        </div>
+
+        {/* VISA TAB */}
+        {tab === "visa" &&!showOffers && (
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <img src={countryPhotos[country]} alt="destination" className="w-full h-64 object-cover" />
+            <div className="p-6">
+              <h3 className="text-2xl font-bold mb-4 text-gray-800">Apply For Visa</h3>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <input type="text" placeholder="Full Name" required className="border p-3 rounded-lg" />
+                  <input type="email" placeholder="Your Email" required className="border p-3 rounded-lg" />
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <input type="tel" placeholder="Phone Number" required className="border p-3 rounded-lg" />
+                  <input type="text" placeholder="Passport Number" required className="border p-3 rounded-lg" />
+                </div>
+                
+                <select value={country} onChange={(e) => {setCountry(e.target.value); setVisaType("")}} required className="w-full border p-3 rounded-lg">
+                  <option value="" disabled hidden>1. Select Destination Country</option>
+                  <option value="UAE">🇦🇪 UAE / Dubai</option>
+                  <option value="Saudi">🇸🇦 Saudi Arabia</option>
+                  <option value="USA">🇺🇸 USA</option>
+                  <option value="Canada">🇨🇦 Canada</option>
+                  <option value="UK">🇬🇧 UK</option>
+                  <option value="Schengen">🇩🇪 Schengen Europe</option>
+                </select>
+
+                {country && (
+                  <select value={visaType} onChange={(e) => setVisaType(e.target.value)} required className="w-full border p-3 rounded-lg bg-yellow-50">
+                    <option value="" disabled hidden>2. Select Visa Type</option>
+                    <option value="Visit Visa">Visit / Tourist Visa</option>
+                    <option value="Work Visa">Work Visa</option>
+                    <option value="Student Visa">Student Visa</option>
+                    <option value="Transit Visa">Transit Visa</option>
+                    <option value="Business Visa">Business Visa</option>
+                  </select>
+                )}
+
+                <textarea placeholder="Any General Query / Message" rows={3} className="w-full border p-3 rounded-lg"></textarea>
+                <button type="submit" className="w-full bg-green-600 text-white p-4 rounded-lg font-bold hover:bg-green-700 transition">Check Latest Visa Offers</button>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* SHOW OFFERS */}
+        {tab === "visa" && showOffers && (
+          <div className="bg-white rounded-2xl shadow-xl p-6">
+            <h3 className="text-2xl font-bold mb-4 text-green-700">Latest {country} Visa Offers</h3>
+            <p className="mb-4 text-gray-600">{result}</p>
+            <div className="space-y-3">
+              {visaOffers[country]?.map((offer, i) => (
+                <div key={i} className="border p-4 rounded-xl hover:shadow-md transition">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="font-bold text-lg">{offer.type}</p>
+                      <p className="text-sm text-gray-500">Processing: {offer.time}</p>
+                    </div>
+                    <p className="font-bold text-xl text-green-600">{offer.price}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <button onClick={() => setShowOffers(false)} className="mt-4 w-full bg-gray-200 p-3 rounded-lg font-bold">← Back to Form</button>
+          </div>
+        )}
+
+        {/* FLIGHTS TAB */}
+        {tab === "flights" && (
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200" alt="flight" className="w-full h-64 object-cover" />
+            <div className="p-6">
+              <h3 className="text-2xl font-bold mb-4">Book Cheapest Flights</h3>
+              <form className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <input type="text" placeholder="From: Lahore LHE" required className="border p-3 rounded-lg" />
+                  <input type="text" placeholder="To: Dubai DXB" required className="border p-3 rounded-lg" />
+                </
