@@ -6,7 +6,9 @@ export default function Home() {
   const [tab, setTab] = useState("visa");
   const [country, setCountry] = useState("");
   const [tour, setTour] = useState("");
+  const [visaType, setVisaType] = useState("");
   const [result, setResult] = useState("")
+  const [showOffers, setShowOffers] = useState(false)
 
   const countryPhotos: any = {
     "": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200",
@@ -29,161 +31,54 @@ export default function Home() {
     "Dubai Luxury Tour": "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1200"
   }
 
-  const handleSubmit = (e: React.FormEvent, type: string) => {
+  const visaOffers: any = {
+    "UAE": [
+      {type: "Visit Visa 30 Days", price: "PKR 45,000", time: "3-5 Working Days"},
+      {type: "Visit Visa 60 Days", price: "PKR 75,000", time: "3-5 Working Days"},
+      {type: "Work Visa", price: "PKR 150,000", time: "10-15 Working Days"}
+    ],
+    "Saudi": [
+      {type: "Umrah Visa", price: "PKR 55,000", time: "24-48 Hours"},
+      {type: "Visit Visa", price: "PKR 60,000", time: "5-7 Working Days"},
+      {type: "Work Visa", price: "PKR 200,000", time: "15-20 Working Days"}
+    ],
+    "USA": [
+      {type: "B1/B2 Visit Visa", price: "PKR 35,000 + Embassy Fee", time: "15-30 Days"},
+      {type: "Student Visa F1", price: "PKR 40,000 + SEVIS", time: "30-45 Days"},
+      {type: "Work Visa H1B", price: "Consultation Required", time: "60-90 Days"}
+    ],
+    "Canada": [
+      {type: "Visitor Visa", price: "PKR 50,000", time: "20-30 Days"},
+      {type: "Study Permit", price: "PKR 55,000", time: "30-60 Days"},
+      {type: "Work Permit", price: "PKR 80,000", time: "45-60 Days"}
+    ],
+    "UK": [
+      {type: "Standard Visitor", price: "PKR 60,000", time: "15-20 Days"},
+      {type: "Student Visa", price: "PKR 65,000", time: "3-6 Weeks"},
+      {type: "Skilled Worker", price: "PKR 120,000", time: "8 Weeks"}
+    ],
+    "Schengen": [
+      {type: "Tourist Visa", price: "PKR 55,000", time: "15-20 Days"},
+      {type: "Business Visa", price: "PKR 60,000", time: "15-20 Days"},
+      {type: "Transit Visa", price: "PKR 40,000", time: "10-15 Days"}
+    ]
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (type === "Visa" &&!country) {
-      setResult("Please select a destination country")
+    if (!country ||!visaType) {
+      setResult("Please select Country and Visa Type")
       return
     }
-    setResult(`✅ ${type} request received! Our agent will WhatsApp you in 10 minutes.`)
+    setShowOffers(true)
+    setResult(`✅ Application submitted for ${visaType} to ${country}`)
   }
 
   return (
     <main className="min-h-screen bg-gray-50">
 
-      {/* HEADER WITH LOGO SPACE */}
-      <header className="bg-white shadow-md sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-xl">V</div>
-            <div>
-              <h1 className="text-xl font-bold text-green-700">Visa & Travel Portal</h1>
-              <p className="text-xs text-gray-500">Trusted by 5000+ Pakistanis</p>
-            </div>
-          </div>
-          <div className="text-sm text-gray-600 hidden md:block">
-            📞 WhatsApp: +92 300 1234567
-          </div>
-        </div>
-      </header>
-
-      {/* HERO SECTION */}
-      <section className="bg-gradient-to-r from-green-600 to-green-400 text-white py-12 text-center">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3">Your Journey Starts Here</h2>
-          <p className="text-lg opacity-90 mb-6">Visa • Flights • Umrah • Hajj • World Tours</p>
-          <p className="text-sm opacity-80">Fast Processing • 100% Guidance • No Hidden Charges</p>
-        </div>
-      </section>
-
-      <div className="max-w-5xl mx-auto px-4 py-8">
-
-        {/* TABS */}
-        <div className="flex gap-3 mb-8 bg-white p-2 rounded-2xl shadow">
-          <button onClick={() => setTab("visa")} className={`flex-1 p-4 rounded-xl font-bold transition ${tab === "visa"? "bg-green-600 text-white shadow" : "bg-gray-50 text-gray-700"}`}>
-            🛂 Visa Services
-          </button>
-          <button onClick={() => setTab("flights")} className={`flex-1 p-4 rounded-xl font-bold transition ${tab === "flights"? "bg-green-600 text-white shadow" : "bg-gray-50 text-gray-700"}`}>
-            ✈️ Flight Booking
-          </button>
-          <button onClick={() => setTab("tours")} className={`flex-1 p-4 rounded-xl font-bold transition ${tab === "tours"? "bg-green-600 text-white shadow" : "bg-gray-50 text-gray-700"}`}>
-            🏝️ Tour Packages
-          </button>
-        </div>
-
-        {/* VISA TAB */}
-        {tab === "visa" && (
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-            <img src={countryPhotos[country]} alt="destination" className="w-full h-64 object-cover" />
-            <div className="p-6">
-              <h3 className="text-2xl font-bold mb-4 text-gray-800">Check Visa Requirements</h3>
-              <form onSubmit={(e) => handleSubmit(e, "Visa")} className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <input type="email" placeholder="Your Email" required className="border p-3 rounded-lg focus:ring-2 focus:ring-green-500" />
-                  <input type="text" placeholder="Passport Number" required className="border p-3 rounded-lg focus:ring-2 focus:ring-green-500" />
-                </div>
-                <select value={country} onChange={(e) => setCountry(e.target.value)} required className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-green-500">
-                  <option value="" disabled hidden>Select Destination Country</option>
-                  <option value="UAE">🇦🇪 UAE / Dubai</option>
-                  <option value="Saudi">🇸🇦 Saudi Arabia</option>
-                  <option value="USA">🇺🇸 USA</option>
-                  <option value="Canada">🇨🇦 Canada</option>
-                  <option value="UK">🇬🇧 UK</option>
-                  <option value="Schengen">🇩🇪 Schengen Europe</option>
-                </select>
-                <button type="submit" className="w-full bg-green-600 text-white p-4 rounded-lg font-bold hover:bg-green-700 transition">Get Free Visa Consultation</button>
-              </form>
-            </div>
-          </div>
-        )}
-
-        {/* FLIGHT TAB */}
-        {tab === "flights" && (
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200" alt="flight" className="w-full h-64 object-cover" />
-            <div className="p-6">
-              <h3 className="text-2xl font-bold mb-4 text-gray-800">Book Cheapest Flights</h3>
-              <form onSubmit={(e) => handleSubmit(e, "Flight")} className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <input type="text" placeholder="From: Lahore LHE" required className="border p-3 rounded-lg" />
-                  <input type="text" placeholder="To: Dubai DXB" required className="border p-3 rounded-lg" />
-                </div>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <input type="date" required className="border p-3 rounded-lg" />
-                  <input type="date" className="border p-3 rounded-lg" />
-                </div>
-                <input type="tel" placeholder="WhatsApp Number" required className="w-full border p-3 rounded-lg" />
-                <button type="submit" className="w-full bg-blue-600 text-white p-4 rounded-lg font-bold hover:bg-blue-700 transition">Get Flight Quotes</button>
-              </form>
-            </div>
-          </div>
-        )}
-
-        {/* TOURS TAB */}
-        {tab === "tours" && (
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-            <img src={tourPhotos[tour]} alt="tour" className="w-full h-64 object-cover" />
-            <div className="p-6">
-              <h3 className="text-2xl font-bold mb-4 text-gray-800">Premium Tour Packages</h3>
-
-              <div className="grid md:grid-cols-4 gap-4 mb-6">
-                <div className="bg-green-50 p-4 rounded-xl border-green-200 text-center">
-                  <p className="font-bold text-green-800">🕋 Umrah</p>
-                  <p className="text-xs text-green-700">Year Round</p>
-                </div>
-                <div className="bg-yellow-50 p-4 rounded-xl border-yellow-200 text-center">
-                  <p className="font-bold text-yellow-800">🇸🇦 Hajj 2027</p>
-                  <p className="text-xs text-yellow-700">Pre-Register</p>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-xl border text-center">
-                  <p className="font-bold">🇹🇷 Turkey</p>
-                  <p className="text-xs">7 Days</p>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-xl border text-center">
-                  <p className="font-bold">🇲🇾 Malaysia</p>
-                  <p className="text-xs">5 Days</p>
-                </div>
-              </div>
-
-              <form onSubmit={(e) => handleSubmit(e, "Tour")} className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <input type="text" placeholder="Your Name" required className="border p-3 rounded-lg" />
-                  <input type="tel" placeholder="WhatsApp Number" required className="border p-3 rounded-lg" />
-                </div>
-                <select value={tour} onChange={(e) => setTour(e.target.value)} required className="w-full border p-3 rounded-lg">
-                  <option value="" disabled hidden>Select Package Type</option>
-                  <option>Umrah Package - Economy</option>
-                  <option>Umrah Package - 4 Star</option>
-                  <option>Umrah Package - 5 Star</option>
-                  <option>Hajj 2027 - Pre-Register Now</option>
-                  <option>Turkey Family Tour</option>
-                  <option>Malaysia Friends Tour</option>
-                  <option>Dubai Luxury Tour</option>
-                </select>
-                <button type="submit" className="w-full bg-orange-600 text-white p-4 rounded-lg font-bold hover:bg-orange-700 transition">Get Package Quote</button>
-              </form>
-            </div>
-          </div>
-        )}
-
-        {result && <p className="mt-6 text-center text-green-700 font-semibold bg-green-50 p-4 rounded-xl">{result}</p>}
-
-        {/* FOOTER */}
-        <footer className="text-center text-gray-500 text-sm mt-12">
-          <p>© 2026 Visa & Travel Portal. Licensed Travel Agency.</p>
-        </footer>
-
-      </div>
-    </main>
-  )
-}
+      {/* HEADER */}
+      <header className="bg-white shadow-lg sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-green-600 to-green-400 rounded-2xl flex items-center justify
