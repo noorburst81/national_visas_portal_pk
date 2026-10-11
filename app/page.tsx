@@ -129,7 +129,7 @@ i
   };
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50">
       {/* HEADER */}
       <header className="bg-white shadow-lg sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center">
@@ -234,7 +234,8 @@ i
               ))}
             </div>
           </div>
-     </main>
+     </div>
+<div>
 
     {showSignup && (
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
@@ -256,5 +257,6 @@ i
       <p>© 2025 National Visas Portal PK - All Rights Reserved</p>
     </footer>
   </div>
+</div>
 );
 }
