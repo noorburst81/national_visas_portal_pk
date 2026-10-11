@@ -1,0 +1,82 @@
+import { NextResponse } from "next/server";
+
+// Reads the visa fees and processing times you maintain in a Google Sheet
+// (File > Share > Publish to web > CSV) and shows them on the site.
+// Sheet columns (row 1 = headers): country, visa, fee, days, note
+// country: UAE, Turkey, Saudi, USA, UK      visa: visit, business, work, umrah
+export const revalidate = 300;
+
+type Offer = { fee: string; days: string; note: string };
+
+function parseCsv(text: string): string[][] {
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let cell = "";
+  let quoted = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (quoted) {
+      if (ch === '"' && text[i + 1] === '"') {
+        cell += '"';
+        i++;
+      } else if (ch === '"') {
+        quoted = false;
+      } else {
+        cell += ch;
+      }
+    } else if (ch === '"') {
+      quoted = true;
+    } else if (ch === ",") {
+      row.push(cell.trim());
+      cell = "";
+    } else if (ch === "\n" || ch === "\r") {
+      if (ch === "\r" && text[i + 1] === "\n") i++;
+      row.push(cell.trim());
+      rows.push(row);
+      row = [];
+      cell = "";
+    } else {
+      cell += ch;
+    }
+  }
+  if (cell.length > 0 || row.length > 0) {
+    row.push(cell.trim());
+    rows.push(row);
+  }
+  return rows;
+}
+
+export async function GET() {
+  const url = process.env.OFFERS_CSV_URL;
+  if (!url) return NextResponse.json({ offers: {} });
+
+  try {
+    const res = await fetch(url, { next: { revalidate: 300 } });
+    if (!res.ok) return NextResponse.json({ offers: {} });
+
+    const rows = parseCsv(await res.text());
+    const head = (rows[0] || []).map((h) => h.toLowerCase());
+    const col = (n: string) => head.indexOf(n);
+    const iCountry = col("country");
+    const iVisa = col("visa");
+    const iFee = col("fee");
+    const iDays = col("days");
+    const iNote = col("note");
+    if (iCountry < 0 || iVisa < 0) return NextResponse.json({ offers: {} });
+
+    const offers: Record<string, Offer> = {};
+    for (const r of rows.slice(1)) {
+      const country = r[iCountry];
+      const visa = (r[iVisa] || "").toLowerCase();
+      if (!country || !visa) continue;
+      offers[`${country}|${visa}`] = {
+        fee: iFee >= 0 ? r[iFee] || "" : "",
+        days: iDays >= 0 ? r[iDays] || "" : "",
+        note: iNote >= 0 ? r[iNote] || "" : "",
+      };
+    }
+    return NextResponse.json({ offers });
+  } catch {
+    return NextResponse.json({ offers: {} });
+  }
+}
