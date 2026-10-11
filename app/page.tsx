@@ -245,10 +245,12 @@ export default function Home() {
           </div>
         </div>
       )}
-            <SubscribeModal open={showSub} onClose={() => setShowSub(false)} />
-      <button onClick={() => setShowSub(true)} className="fixed bottom-6 right-6 z-[999] bg-green-600 text-white px-5 py-3 rounded-full">🔔 Subscribe 10% OFF</button>
+                  <SubscribeModal open={showSub} onClose={() => setShowSub(false)} />
+      <button onClick={() => setShowSub(true)} className="fixed bottom-6 right-6 z-[999] bg-green-600 text-white px-5 py-3 rounded-full font-bold shadow-xl">🔔 Subscribe 10% OFF</button>
 
-      <footer>... </footer>
+      <footer className="bg-slate-900 text-white py-8 text-center text-sm">
+        <p>© 2025 National Visas Portal PK - All Rights Reserved</p>
+      </footer>
     </div>
   );
 }
