@@ -9,7 +9,7 @@ export default function Home() {
   const [result, setResult] = useState("");
   const [showOffers, setShowOffers] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
-  const [isSignedUp, setIsSignedUp] = useState(false);
+  const [isSignedUp, setIsSignedUp] = useState(true);
   const [form, setForm] = useState({ name: "", email: "", phone: "" });
 i
   const countryPhotos: any = {
