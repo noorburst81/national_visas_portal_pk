@@ -130,8 +130,9 @@ export default function Home() {
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 bg-gradient-to-br from-green-800 to-green-400 rounded-2xl flex items-center justify-center text-white font-black">N</div>
             <div>
-              <h1 className="font-black text-green-700 text-lg leading-none">National Visas Portal</h1>
-              <p className="text-xs text-slate-500 mt-1">Trusted Since 2010 • Lahore</p>
+              <h1 className="font-black text-green-700 text-lg leading-none">Pakistan travel and visas Services</h1>
+              <p className="text-xs font-bold text-green-800">We Help You in Visa Processing</p>
+<p className="text-xs text-slate-500 mt-1">Trusted Since 2010 • Lahore • Pakistan</p>
             </div>
           </div>
           <div className="flex gap-2">
