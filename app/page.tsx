@@ -245,8 +245,7 @@ export default function Home() {
           </div>
         </div>
       )}
-
-      <footer className="bg-slate-900 text-white py-8 mt-12"><div className="max-w-6xl mx-auto px-4 text-center"><p className="font-bold">National Visas Portal - Lahore</p><p className="text-sm opacity-70 mt-2">© 2026 All Rights Reserved • Trusted Since 2010</p></div></footer>
-    </main>
+            <SubscribeModal open={showSub} onClose={() => setShowSub(false)} />
+      <button onClick={() => setShowSub(true)} className="fixed bottom-6 right-6 z-[999] bg-green-600 text-white px-5 py-3 rounded-full font-bold shadow-xl">🔔 Subscribe 10% OFF</button>
   );
 }
