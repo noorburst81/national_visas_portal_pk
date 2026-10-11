@@ -234,8 +234,6 @@ i
               ))}
             </div>
           </div>
-        )}
-            </div>
     </main>
 
     {showSignup && (
