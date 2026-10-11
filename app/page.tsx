@@ -231,6 +231,7 @@ i
         )}
       </div>
 
+    </main>
       {showSignup && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
@@ -245,7 +246,6 @@ i
           </div>
         </div>
       )}
-    </main>
                   <SubscribeModal open={showSub} onClose={() => setShowSub(false)} />
       <button onClick={() => setShowSub(true)} className="fixed bottom-6 right-6 z-[999] bg-green-600 text-white px-5 py-3 rounded-full font-bold shadow-xl">🔔 Subscribe 10% OFF</button>
 
