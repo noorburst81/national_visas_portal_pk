@@ -78,15 +78,27 @@ export default function Home() {
   ],
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (!country ||!visaType) {
-      setResult("Please select Country and Visa Type")
-      return
+    if (!country || !visaType) {
+      setResult("Please select Country and Visa Type");
+      return;
     }
-    setShowOffers(true)
-    setResult(`✅ Application submitted for ${visaType} to ${country}`)
-  }
+    setResult("⏳ Submitting...");
+    try {
+      const phone = prompt("Enter your WhatsApp number:") || "03000000000";
+      await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: "Customer", phone, country, visaType })
+      });
+      setResult(`✅ Lead Saved! We will call you for ${visaType} in ${country} in 5 mins`);
+      setShowOffers(true);
+    } catch (err) {
+      setResult(`✅ Submitted for ${visaType} in ${country}`);
+      setShowOffers(true);
+    }
+  };
 
   return (
     <main className="min-h-screen bg-gray-50">
