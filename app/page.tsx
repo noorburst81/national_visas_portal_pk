@@ -11,7 +11,7 @@ export default function Home() {
   const [showSignup, setShowSignup] = useState(false);
   const [isSignedUp, setIsSignedUp] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", phone: "" });
-
+i
   const countryPhotos: any = {
     UAE: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200",
     Saudi: "https://images.unsplash.com/photo-1591604466108-ec97de577aff?w=1200",
@@ -245,6 +245,7 @@ export default function Home() {
           </div>
         </div>
       )}
+    </main>
                   <SubscribeModal open={showSub} onClose={() => setShowSub(false)} />
       <button onClick={() => setShowSub(true)} className="fixed bottom-6 right-6 z-[999] bg-green-600 text-white px-5 py-3 rounded-full font-bold shadow-xl">🔔 Subscribe 10% OFF</button>
 
