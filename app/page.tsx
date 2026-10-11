@@ -231,27 +231,30 @@ i
         )}
       </div>
 
-    </main>
-      {showSignup && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
-            <h3 className="font-black text-xl">Get Free Visa Checklist</h3><p className="text-sm text-slate-500 mt-1">Enter details, unlock instantly</p>
-            <form onSubmit={handleSignup} className="space-y-3 mt-4">
-              <input value={form.name} onChange={(e) => setForm({...form, name: e.target.value })} placeholder="Full Name" className="w-full border rounded-xl px-3 py-3" required />
-              <input value={form.email} onChange={(e) => setForm({...form, email: e.target.value })} placeholder="Email Address" type="email" className="w-full border rounded-xl px-3 py-3" required />
-              <input value={form.phone} onChange={(e) => setForm({...form, phone: e.target.value })} placeholder="WhatsApp Number 0300..." className="w-full border rounded-xl px-3 py-3" required />
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold">Unlock Free Checklist →</button>
-            </form>
-            <button onClick={() => setShowSignup(false)} className="w-full mt-3 text-sm text-slate-500">Cancel</button>
-          </div>
-        </div>
-      )}
-                  <SubscribeModal open={showSub} onClose={() => setShowSub(false)} />
-      <button onClick={() => setShowSub(true)} className="fixed bottom-6 right-6 z-[999] bg-green-600 text-white px-5 py-3 rounded-full font-bold shadow-xl">🔔 Subscribe 10% OFF</button>
+   </main>
 
-      <footer className="bg-slate-900 text-white py-8 text-center text-sm">
-        <p>© 2025 National Visas Portal PK - All Rights Reserved</p>
-      </footer>
-    </div>
-  );
-}
+{showSignup && (
+<div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+<div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
+<h2 className="font-black text-xl">Get Free Visa Checklist</h2>
+<p className="text-sm text-slate-500 mt-1">Enter details to unlock</p>
+<form onSubmit={handleSignup} className="space-y-3 mt-4">
+<input value={form.name} onChange={(e) => setForm({...form, name: e.target.value})} placeholder="Full Name" className="w-full border p-3 rounded-xl" />
+<input value={form.email} onChange={(e) => setForm({...form, email: e.target.value})} placeholder="Email Address" className="w-full border p-3 rounded-xl" />
+<input value={form.phone} onChange={(e) => setForm({...form, phone: e.target.value})} placeholder="WhatsApp No" className="w-full border p-3 rounded-xl" />
+<button className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold">Unlock Free Checklist</button>
+</form>
+<button onClick={() => setShowSignup(false)} className="w-full mt-3 text-sm text-slate-500">Cancel</button>
+</div>
+</div>
+)}
+
+<SubscribeModal open={showSub} onClose={() => setShowSub(false)} />
+<button onClick={() => setShowSub(true)} className="fixed bottom-6 right-6 z-[999] bg-green-600 text-white px-5 py-3 rounded-full font-bold shadow-xl">🔔 Subscribe 10% OFF</button>
+
+<footer className="bg-slate-900 text-white py-8 text-center text-sm">
+<p>© 2025 National Visas Portal PK - All Rights Reserved</p>
+</footer>
+</div>
+);
+} 
