@@ -246,6 +246,10 @@ export default function Home() {
         </div>
       )}
             <SubscribeModal open={showSub} onClose={() => setShowSub(false)} />
-      <button onClick={() => setShowSub(true)} className="fixed bottom-6 right-6 z-[999] bg-green-600 text-white px-5 py-3 rounded-full font-bold shadow-xl">🔔 Subscribe 10% OFF</button>
+        <SubscribeModal open={showSub} onClose={() => setShowSub(false)} />
+      <button onClick={() => setShowSub(true)} className="fixed bottom-6 right-6 z-[999] bg-green-600 text-white px-5 py-3 rounded-full">🔔 Subscribe 10% OFF</button>
+
+      <footer>... </footer>
+    </div>
   );
 }
