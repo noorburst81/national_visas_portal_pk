@@ -11,14 +11,14 @@ export default function Home() {
   const [showOffers, setShowOffers] = useState(false)
 
   const countryPhotos: any = {
-    "": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200",
-    "UAE": "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1200",
-    "Saudi": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200",
-    "USA": "https://images.unsplash.com/photo-1485738422979-e7d0f08eeaf6?w=1200",
-    "Canada": "https://images.unsplash.com/photo-1503614478163-cffdde4cc758?w=1200",
-    "UK": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200",
-    "Schengen": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200"
-  }
+  "UAE": "https://images.unsplash.com/photo-1580671994727-7d5623d86a4e?w=1200",
+  "Saudi": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1200",
+  "USA": "https://images.unsplash.com/photo-1485738422979-b5a6f541e2b6?w=1200",
+  "Canada": "https://images.unsplash.com/photo-1750064514137-8f7b0aa87b6c?w=1200",
+  "UK": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200",
+  "Schengen": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200",
+  "Pakistan": "https://images.unsplash.com/photo-1608461835437-77eb602ddab8?w=1200"
+}
 
   const tourPhotos: any = {
     "": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200",
@@ -62,6 +62,11 @@ export default function Home() {
       {type: "Business Visa", price: "PKR 60,000", time: "15-20 Days"},
       {type: "Transit Visa", price: "PKR 40,000", time: "10-15 Days"}
     ]
+      "Pakistan": [
+    {type: "Visit Visa 30 Days", price: "PKR 15,000", time: "5-7 Working Days"},
+    {type: "Family Visit Visa", price: "PKR 20,000", time: "7-10 Working Days"},
+    {type: "Business Visa", price: "PKR 35,000", time: "10-15 Working Days"}
+  ],
   }
 
   const handleSubmit = (e: React.FormEvent) => {
