@@ -235,30 +235,28 @@ i
             </div>
           </div>
         )}
+            </div>
+    </main>
+
+    {showSignup && (
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl">
+          <h2 className="font-black text-xl">Get Free Visa Checklist!</h2>
+          <p className="text-sm text-slate-500 mt-1 mb-4">Enter details to unlock</p>
+          <form onSubmit={handleSignup} className="space-y-3">
+            <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Full Name" className="w-full border rounded-lg p-2" required />
+            <input value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="Email Address" type="email" className="w-full border rounded-lg p-2" required />
+            <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="WhatsApp No" className="w-full border rounded-lg p-2" required />
+            <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg font-bold">Unlock Free Checklist</button>
+          </form>
+          <button onClick={() => setShowSignup(false)} className="w-full mt-3 text-sm text-slate-500">Cancel</button>
+        </div>
       </div>
+    )}
 
-   </main>
-
-{showSignup && (
-<div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-<div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
-<h2 className="font-black text-xl">Get Free Visa Checklist</h2>
-<p className="text-sm text-slate-500 mt-1">Enter details to unlock</p>
-<form onSubmit={handleSignup} className="space-y-3 mt-4">
-<input value={form.name} onChange={(e) => setForm({...form, name: e.target.value})} placeholder="Full Name" className="w-full border p-3 rounded-xl" />
-<input value={form.email} onChange={(e) => setForm({...form, email: e.target.value})} placeholder="Email Address" className="w-full border p-3 rounded-xl" />
-<input value={form.phone} onChange={(e) => setForm({...form, phone: e.target.value})} placeholder="WhatsApp No" className="w-full border p-3 rounded-xl" />
-<button className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold">Unlock Free Checklist</button>
-</form>
-<button onClick={() => setShowSignup(false)} className="w-full mt-3 text-sm text-slate-500">Cancel</button>
-</div>
-</div>
-)}
-
-
-<footer className="bg-slate-900 text-white py-8 text-center text-sm">
-<p>© 2025 National Visas Portal PK - All Rights Reserved</p>
-</footer>
-</div>
+    <footer className="bg-slate-900 text-white py-8 text-center text-sm">
+      <p>© 2025 National Visas Portal PK - All Rights Reserved</p>
+    </footer>
+  </div>
 );
-}  
+}
