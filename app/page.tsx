@@ -9,7 +9,8 @@ export default function Home() {
   const [result, setResult] = useState("");
   const [showOffers, setShowOffers] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
-  const [isSignedUp, setIsSignedUp] = useState(true);
+  const [isSignedUp, setIsSignedUp] = useState(false)
+const [showSub, setShowSub] = useState(false)
   const [form, setForm] = useState({ name: "", email: "", phone: "" });
 i
   const countryPhotos: any = {
@@ -81,26 +82,31 @@ i
   };
 
   const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    if (!country ||!visaType) {
-      setResult("Please select Country and Visa Type");
-      return;
-    }
-    setResult("Submitting...");
-    try {
-      const phone = prompt("Enter your WhatsApp number:") || "03000000000";
-      await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: "Customer", phone, country, visaType }),
-      });
-      setResult(`Lead Saved! We will call you for ${visaType} in ${country} in 5 mins.`);
-      setShowOffers(true);
-    } catch (err) {
-      setResult(`Submitted for ${visaType} in ${country}`);
-      setShowOffers(true);
-    }
-  };
+  e.preventDefault();
+  if(!country || !visaType){
+    setResult("Please select Country and Visa Type");
+    return;
+  }
+  // GATE: If not signed, force signup
+  if(!isSignedUp){
+    setShowSignup(true);
+    return;
+  }
+  setResult("Submitting...");
+  try {
+    const phone = prompt("Enter your WhatsApp number:") || "03000000000";
+    await fetch("/api/leads",{
+      method:"POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({ name: "Customer", phone, country, visaType }),
+    });
+    setResult(`Lead Saved! We will call you for ${visaType} in ${country} in 5 mins.`);
+    setShowOffers(true);
+  } catch(err){
+    setResult(`Submitted for ${visaType} in ${country}`);
+    setShowOffers(true);
+  }
+}
 
   const handleSignup = async (e: any) => {
     e.preventDefault();
@@ -249,8 +255,6 @@ i
 </div>
 )}
 
-<SubscribeModal open={showSub} onClose={() => setShowSub(false)} />
-<button onClick={() => setShowSub(true)} className="fixed bottom-6 right-6 z-[999] bg-green-600 text-white px-5 py-3 rounded-full font-bold shadow-xl">🔔 Subscribe 10% OFF</button>
 
 <footer className="bg-slate-900 text-white py-8 text-center text-sm">
 <p>© 2025 National Visas Portal PK - All Rights Reserved</p>
