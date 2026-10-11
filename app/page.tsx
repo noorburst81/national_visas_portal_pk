@@ -10,26 +10,35 @@ export default function Home() {
   const [result, setResult] = useState("")
   const [showOffers, setShowOffers] = useState(false)
 
-  const countryPhotos: any = {
-  "UAE": "https://images.unsplash.com/photo-1580671994727-7d5623d86a4e?w=1200",
-  "Saudi": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1200",
-  "USA": "https://images.unsplash.com/photo-1485738422979-b5a6f541e2b6?w=1200",
-  "Canada": "https://images.unsplash.com/photo-1750064514137-8f7b0aa87b6c?w=1200",
-  "UK": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200",
-  "Schengen": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200",
-  "Pakistan": "https://images.unsplash.com/photo-1608461835437-77eb602ddab8?w=1200"
-}
+    const countryPhotos: any = {
+    "UAE": "https://images.unsplash.com/photo-1580671994727-7d5623d86a4e?w=1200",
+    "Saudi": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1200",
+    "USA": "https://images.unsplash.com/photo-1485738422979-b5a6f541e2b6?w=1200",
+    "Canada": "https://images.unsplash.com/photo-1750064514137-8f7b0aa87b6c?w=1200",
+    "UK": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200",
+    "Schengen": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200",
+    "Pakistan": "https://images.unsplash.com/photo-1608461835437-77eb602ddab8?w=1200"
+  };
 
-  constconst flags: any = {"UAE":"🇦🇪","Saudi":"🇸🇦","USA":"🇺🇸","Canada":"🇨🇦","UK":"🇬🇧","Schengen":"🇪🇺","Pakistan":"🇵🇰"}; tourPhotos: any = {
-    "": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200",
-    "Umrah Package - Economy": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200",
-    "Umrah Package - 4 Star": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200",
-    "Umrah Package - 5 Star": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200",
-    "Hajj 2027 - Pre-Register Now": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200",
+  const countryFlags: any = {
+    "UAE": "🇦🇪",
+    "Saudi": "🇸🇦",
+    "USA": "🇺🇸",
+    "Canada": "🇨🇦",
+    "UK": "🇬🇧",
+    "Schengen": "🇪🇺",
+    "Pakistan": "🇵🇰"
+  };
+
+  const tourPhotos: any = {
+    "Umrah Package - Economy": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200",
+    "Umrah Package - 4 Star": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1200",
+    "Umrah Package - 5 Star": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1200",
+    "Hajj 2027 - Pre-Registration": "https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=1200",
     "Turkey Family Tour": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=1200",
-    "Malaysia Friends Tour": "https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=1200",
+    "Malaysia Friends Tour": "https://images.unsplash.com/photo-1596422840843-7f48f0aa87b6?w=1200",
     "Dubai Luxury Tour": "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1200"
-  }
+  };
 
   const visaOffers: any = {
     "UAE": [
