@@ -142,6 +142,12 @@ export default function Home() {
         </div>
       </header>
 
+      {/* AD - TOP */}
+<div className="max-w-6xl mx-auto px-4 mt-3">
+  <div className="bg-slate-100 border-2 border-dashed rounded-xl h-[90px] flex items-center justify-center text-slate-400 text-xs font-bold">
+    📢 AD SPACE TOP - Google Ad Will Appear Here
+  </div>
+</div>
       <div className="max-w-6xl mx-auto px-4 py-6">
         {tab === "visa"? (
           <div className="grid md:grid-cols-2 gap-6">
@@ -174,6 +180,11 @@ export default function Home() {
                     </div>
                   ) : (
                     <div className="space-y-4">
+                      {/* AD - SIDEBAR */}
+<div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-3 text-center">
+  <p className="text-[10px] font-bold text-slate-400">Sponsored</p>
+  <div className="h-60 bg-white rounded-xl mt-2 flex items-center justify-center text-xs text-slate-400">AD 300x250<br/>Your Earning Ad</div>
+</div>
                       <div className="bg-green-50 border border-green-200 p-4 rounded-xl"><p className="font-bold text-green-800">✅ Unlocked! Hi {form.name}, sent to {form.email}</p></div>
                       {visaOffers[country]?.filter((v: any) => v.type === visaType).map((v: any, i: number) => (
                         <div key={i} className="border-2 border-green-200 rounded-xl p-4 bg-green-50">
