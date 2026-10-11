@@ -10,7 +10,10 @@ export default function Home() {
   const [result, setResult] = useState("")
   const [showOffers, setShowOffers] = useState(false)
 
-    const countryPhotos: any = {
+      const [showSignup, setShowSignup] = useState(false);
+  const [isSignedUp, setIsSignedUp] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", phone: "" });
+  const countryPhotos: any = {
     "UAE": "https://images.unsplash.com/photo-1580671994727-7d5623d86a4e?w=1200",
     "Saudi": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1200",
     "USA": "https://images.unsplash.com/photo-1485738422979-b5a6f541e2b6?w=1200",
@@ -99,6 +102,20 @@ export default function Home() {
       setShowOffers(true);
     }
   };
+  const handleSignup = async (e: any) => {
+    e.preventDefault();
+    if (!form.name || !form.email || !form.phone) { alert("Fill all fields"); return; }
+    try {
+      await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: form.name, phone: form.phone, email: form.email, country, visaType })
+      });
+      setIsSignedUp(true);
+      setShowSignup(false);
+    } catch { setIsSignedUp(true); setShowSignup(false); }
+  };
+
 
   return (
     <main className="min-h-screen bg-gray-50">
