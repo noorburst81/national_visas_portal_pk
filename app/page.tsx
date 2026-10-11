@@ -12,7 +12,6 @@ export default function Home() {
   const [isSignedUp, setIsSignedUp] = useState(false)
 const [showSub, setShowSub] = useState(false)
   const [form, setForm] = useState({ name: "", email: "", phone: "" });
-i
   const countryPhotos: any = {
     UAE: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200",
     Saudi: "https://images.unsplash.com/photo-1591604466108-ec97de577aff?w=1200",
@@ -129,7 +128,8 @@ i
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+  <div>
+  <main className="min-h-screen bg-gray-50">
       {/* HEADER */}
       <header className="bg-white shadow-lg sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center">
