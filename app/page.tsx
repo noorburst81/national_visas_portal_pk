@@ -20,7 +20,7 @@ export default function Home() {
   "Pakistan": "https://images.unsplash.com/photo-1608461835437-77eb602ddab8?w=1200"
 }
 
-  const tourPhotos: any = {
+  constconst flags: any = {"UAE":"🇦🇪","Saudi":"🇸🇦","USA":"🇺🇸","Canada":"🇨🇦","UK":"🇬🇧","Schengen":"🇪🇺","Pakistan":"🇵🇰"}; tourPhotos: any = {
     "": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200",
     "Umrah Package - Economy": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200",
     "Umrah Package - 4 Star": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200",
