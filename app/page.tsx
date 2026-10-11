@@ -1,262 +1,474 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function Home() {
-  const [tab, setTab] = useState("visa");
-  const [country, setCountry] = useState("");
-  const [tour, setTour] = useState("");
-  const [visaType, setVisaType] = useState("");
-  const [result, setResult] = useState("");
-  const [showOffers, setShowOffers] = useState(false);
-  const [showSignup, setShowSignup] = useState(false);
-  const [isSignedUp, setIsSignedUp] = useState(false)
-const [showSub, setShowSub] = useState(false)
-  const [form, setForm] = useState({ name: "", email: "", phone: "" });
-  const countryPhotos: any = {
-    UAE: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200",
-    Saudi: "https://images.unsplash.com/photo-1591604466108-ec97de577aff?w=1200",
-    USA: "https://images.unsplash.com/photo-1485738422979-b5d0a3a0a6a7?w=1200",
-    Canada: "https://images.unsplash.com/photo-1730604545-2c0b0a1c7b2e?w=1200",
-    UK: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200",
-    Schengen: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200",
-    Pakistan: "https://images.unsplash.com/photo-1605627079912-97c3810a11a4?w=1200",
+type Lang = "en" | "ur" | "ar";
+type L3 = Record<Lang, string>;
+type User = { name: string; phone: string };
+
+// Business WhatsApp number in international format (no +)
+const WHATSAPP = "923089400872";
+const WHATSAPP_DISPLAY = "0308 9400872";
+
+const LANGS: { code: Lang; label: string }[] = [
+  { code: "en", label: "English" },
+  { code: "ur", label: "اردو" },
+  { code: "ar", label: "العربية" },
+];
+
+/* ---------- Interface text ---------- */
+const T: Record<string, L3> = {
+  chooseLang: { en: "Choose your language", ur: "اپنی زبان منتخب کریں", ar: "اختر لغتك" },
+  tagline: {
+    en: "Your trusted partner for visa guidance",
+    ur: "ویزا رہنمائی کے لیے آپ کا قابلِ اعتماد ساتھی",
+    ar: "شريكك الموثوق في إرشادات التأشيرات",
+  },
+  welcome: { en: "Welcome, {name}!", ur: "خوش آمدید، {name}!", ar: "مرحباً، {name}!" },
+  selectCountry: { en: "Select a country", ur: "ملک منتخب کریں", ar: "اختر الدولة" },
+  selectVisa: {
+    en: "Select a visa type for {country}",
+    ur: "{country} کے لیے ویزا کی قسم منتخب کریں",
+    ar: "اختر نوع التأشيرة إلى {country}",
+  },
+  tapChecklist: {
+    en: "Tap to view the document checklist",
+    ur: "دستاویزات کی فہرست دیکھنے کے لیے دبائیں",
+    ar: "اضغط لعرض قائمة المستندات",
+  },
+  feeNote: {
+    en: "Fees and processing time are confirmed after review.",
+    ur: "فیس اور وقت کا تعین جائزے کے بعد کیا جاتا ہے۔",
+    ar: "تُحدَّد الرسوم ومدة المعالجة بعد المراجعة.",
+  },
+  back: { en: "Back to visa types", ur: "ویزا کی اقسام پر واپس جائیں", ar: "العودة إلى أنواع التأشيرات" },
+  tickIntro: {
+    en: "Tick each document you have ready. You will then send them to us on WhatsApp.",
+    ur: "جو دستاویزات آپ کے پاس تیار ہیں ان پر نشان لگائیں۔ اس کے بعد آپ انہیں واٹس ایپ پر ہمیں بھیجیں گے۔",
+    ar: "ضع علامة على كل مستند جاهز لديك. بعد ذلك سترسلها إلينا عبر واتساب.",
+  },
+  submit: { en: "Submit checklist", ur: "چیک لسٹ جمع کروائیں", ar: "إرسال القائمة" },
+  submitDisabled: {
+    en: "Tick all documents to enable submit",
+    ur: "جمع کروانے کے لیے تمام دستاویزات پر نشان لگائیں",
+    ar: "ضع علامة على جميع المستندات لتفعيل الإرسال",
+  },
+  authTitle: {
+    en: "Please enter your details to continue",
+    ur: "جاری رکھنے کے لیے اپنی معلومات درج کریں",
+    ar: "يرجى إدخال بياناتك للمتابعة",
+  },
+  fullName: { en: "Full name", ur: "پورا نام", ar: "الاسم الكامل" },
+  phone: {
+    en: "WhatsApp number (e.g. 03001234567)",
+    ur: "واٹس ایپ نمبر (مثلاً 03001234567)",
+    ar: "رقم واتساب (مثال: 03001234567)",
+  },
+  continue: { en: "Continue", ur: "جاری رکھیں", ar: "متابعة" },
+  cancel: { en: "Cancel", ur: "منسوخ کریں", ar: "إلغاء" },
+  fillAll: { en: "Please fill in all fields.", ur: "براہ کرم تمام خانے پُر کریں۔", ar: "يرجى تعبئة جميع الحقول." },
+  badPhone: {
+    en: "Please enter a valid WhatsApp number.",
+    ur: "براہ کرم درست واٹس ایپ نمبر درج کریں۔",
+    ar: "يرجى إدخال رقم واتساب صحيح.",
+  },
+  readyTitle: { en: "Your checklist is ready to send", ur: "آپ کی چیک لسٹ بھیجنے کے لیے تیار ہے", ar: "قائمتك جاهزة للإرسال" },
+  readyBody: {
+    en: "Hi {name}, tap the button below to send your {visa} checklist to us on WhatsApp. We will review it and reply within 1–2 business days.",
+    ur: "{name}، اپنی {visa} کی چیک لسٹ واٹس ایپ پر بھیجنے کے لیے نیچے دیا گیا بٹن دبائیں۔ ہم اس کا جائزہ لے کر 1 سے 2 کاروباری دنوں میں جواب دیں گے۔",
+    ar: "مرحباً {name}، اضغط على الزر أدناه لإرسال قائمة {visa} إلينا عبر واتساب. سنراجعها ونرد عليك خلال يوم إلى يومي عمل.",
+  },
+  sendWA: { en: "Send on WhatsApp", ur: "واٹس ایپ پر بھیجیں", ar: "إرسال عبر واتساب" },
+  another: { en: "Submit another application", ur: "ایک اور درخواست جمع کروائیں", ar: "تقديم طلب آخر" },
+  changeDetails: { en: "Not you? Change details", ur: "آپ نہیں ہیں؟ معلومات تبدیل کریں", ar: "لست أنت؟ غيّر البيانات" },
+  footer: { en: "All rights reserved", ur: "جملہ حقوق محفوظ ہیں", ar: "جميع الحقوق محفوظة" },
+};
+
+/* ---------- Names ---------- */
+const countryNames: Record<string, L3> = {
+  UAE: { en: "UAE", ur: "متحدہ عرب امارات", ar: "الإمارات" },
+  Turkey: { en: "Turkey", ur: "ترکی", ar: "تركيا" },
+  Saudi: { en: "Saudi Arabia", ur: "سعودی عرب", ar: "السعودية" },
+  USA: { en: "USA", ur: "امریکہ", ar: "الولايات المتحدة" },
+  UK: { en: "UK", ur: "برطانیہ", ar: "المملكة المتحدة" },
+};
+
+const visaNames: Record<string, L3> = {
+  visit: { en: "Visit Visa", ur: "وزٹ ویزا", ar: "تأشيرة زيارة" },
+  business: { en: "Business Visa", ur: "بزنس ویزا", ar: "تأشيرة أعمال" },
+  work: { en: "Work Visa", ur: "ورک ویزا", ar: "تأشيرة عمل" },
+  umrah: { en: "Umrah Visa", ur: "عمرہ ویزا", ar: "تأشيرة عمرة" },
+};
+
+/* ---------- Documents ---------- */
+const D: Record<string, L3> = {
+  passport6: {
+    en: "Passport copy (valid for at least 6 months)",
+    ur: "پاسپورٹ کی کاپی (کم از کم 6 ماہ کی میعاد کے ساتھ)",
+    ar: "نسخة من جواز السفر (صالح لمدة 6 أشهر على الأقل)",
+  },
+  passport8: {
+    en: "Passport (valid for at least 8 months)",
+    ur: "پاسپورٹ (کم از کم 8 ماہ کی میعاد کے ساتھ)",
+    ar: "جواز سفر (صالح لمدة 8 أشهر على الأقل)",
+  },
+  passportCopy: { en: "Passport copy", ur: "پاسپورٹ کی کاپی", ar: "نسخة من جواز السفر" },
+  photoWhite: { en: "Photograph with a white background", ur: "سفید پس منظر والی تصویر", ar: "صورة شخصية بخلفية بيضاء" },
+  photo: { en: "Photograph", ur: "تصویر", ar: "صورة شخصية" },
+  photo5: { en: "Photograph (5×5 cm)", ur: "تصویر (5×5 سینٹی میٹر)", ar: "صورة شخصية (5×5 سم)" },
+  cnic: { en: "CNIC copy", ur: "شناختی کارڈ کی کاپی", ar: "نسخة من بطاقة الهوية (CNIC)" },
+  returnTicket: { en: "Return ticket booking", ur: "واپسی ٹکٹ کی بکنگ", ar: "حجز تذكرة العودة" },
+  bank6: { en: "Bank statement (last 6 months)", ur: "بینک اسٹیٹمنٹ (آخری 6 ماہ)", ar: "كشف حساب بنكي (آخر 6 أشهر)" },
+  bank3: { en: "Bank statement (last 3 months)", ur: "بینک اسٹیٹمنٹ (آخری 3 ماہ)", ar: "كشف حساب بنكي (آخر 3 أشهر)" },
+  bankGen: { en: "Bank statement", ur: "بینک اسٹیٹمنٹ", ar: "كشف حساب بنكي" },
+  companyLetter: {
+    en: "Company letter / NTN certificate",
+    ur: "کمپنی کا خط / این ٹی این سرٹیفکیٹ",
+    ar: "خطاب الشركة / شهادة الرقم الضريبي (NTN)",
+  },
+  ntnCert: { en: "NTN certificate", ur: "این ٹی این سرٹیفکیٹ", ar: "شهادة الرقم الضريبي (NTN)" },
+  chamber: { en: "Chamber of Commerce letter", ur: "چیمبر آف کامرس کا خط", ar: "خطاب غرفة التجارة" },
+  educational: { en: "Educational documents", ur: "تعلیمی اسناد", ar: "الشهادات الدراسية" },
+  experience: { en: "Experience letter", ur: "تجربے کا خط", ar: "شهادة الخبرة" },
+  frc: {
+    en: "Family Registration Certificate (FRC) or marriage certificate, if travelling with family",
+    ur: "فیملی رجسٹریشن سرٹیفکیٹ (FRC) یا نکاح نامہ، اگر اہلِ خانہ کے ساتھ سفر کر رہے ہوں",
+    ar: "شهادة تسجيل العائلة (FRC) أو عقد الزواج عند السفر مع العائلة",
+  },
+  vaccine: { en: "Vaccination card", ur: "ویکسین کارڈ", ar: "بطاقة التطعيم" },
+  medical: { en: "Medical report", ur: "میڈیکل رپورٹ", ar: "تقرير طبي" },
+  degreeAtt: { en: "Attested degree", ur: "تصدیق شدہ ڈگری", ar: "شهادة جامعية مصدّقة" },
+  jobLetter: {
+    en: "Job letter / FBR tax record",
+    ur: "ملازمت کا خط / ایف بی آر ٹیکس ریکارڈ",
+    ar: "خطاب العمل / سجل الضرائب (FBR)",
+  },
+  companyDocs: { en: "Company documents", ur: "کمپنی کے دستاویزات", ar: "وثائق الشركة" },
+  invitation: { en: "Invitation letter (if any)", ur: "دعوت نامہ (اگر ہو)", ar: "خطاب دعوة (إن وجد)" },
+  empLetter: { en: "Employment letter", ur: "ملازمت کا خط", ar: "خطاب التوظيف" },
+};
+
+const visaData: Record<string, Record<string, string[]>> = {
+  UAE: {
+    visit: ["passport6", "photoWhite", "cnic", "returnTicket"],
+    business: ["passport6", "photoWhite", "cnic", "bank6", "companyLetter"],
+    work: ["passport6", "photoWhite", "cnic", "educational", "experience"],
+  },
+  Turkey: {
+    visit: ["passportCopy", "photo", "cnic", "bank3", "frc"],
+    business: ["passportCopy", "photo", "ntnCert", "bank6", "chamber"],
+  },
+  Saudi: {
+    umrah: ["passport8", "photoWhite", "cnic", "vaccine"],
+    work: ["passportCopy", "photo", "cnic", "medical", "degreeAtt"],
+  },
+  USA: {
+    visit: ["passportCopy", "photo5", "bank6", "jobLetter"],
+    business: ["passportCopy", "photo5", "companyDocs", "bankGen", "invitation"],
+  },
+  UK: {
+    visit: ["passportCopy", "photo", "bank6", "empLetter", "cnic"],
+  },
+};
+
+const countries = Object.keys(visaData);
+
+export default function Page() {
+  const [lang, setLang] = useState<Lang>("en");
+  const [selectedCountry, setSelectedCountry] = useState("UAE");
+  const [selectedVisa, setSelectedVisa] = useState("");
+  const [ticks, setTicks] = useState<boolean[]>([]);
+  const [showAuth, setShowAuth] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [error, setError] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // Translate helper: t("key", { name: "Ali" })
+  const t = (key: string, vars?: Record<string, string>) => {
+    let s = T[key]?.[lang] ?? key;
+    if (vars) {
+      Object.keys(vars).forEach((k) => {
+        s = s.split(`{${k}}`).join(vars[k]);
+      });
+    }
+    return s;
   };
 
-  const countryFlags: any = {
-    UAE: "🇦🇪",
-    Saudi: "🇸🇦",
-    USA: "🇺🇸",
-    Canada: "🇨🇦",
-    UK: "🇬🇧",
-    Schengen: "🇪🇺",
-    Pakistan: "🇵🇰",
+  // Load saved language and user
+  useEffect(() => {
+    try {
+      const savedLang = localStorage.getItem("nvp_lang");
+      if (savedLang === "en" || savedLang === "ur" || savedLang === "ar") setLang(savedLang);
+      const savedUser = localStorage.getItem("nvp_user");
+      if (savedUser) setUser(JSON.parse(savedUser));
+    } catch {
+      // storage unavailable: ignore
+    }
+  }, []);
+
+  const changeLang = (l: Lang) => {
+    setLang(l);
+    try {
+      localStorage.setItem("nvp_lang", l);
+    } catch {
+      // ignore
+    }
   };
 
-  const tourPhotos: any = {
-    "Umrah Package - Economy": "https://images.unsplash.com/photo-15074403186-4273783833c7?w=1200",
-    "Umrah Package - 4 Star": "https://images.unsplash.com/photo-1574781126401-d1f6b7e4611e?w=1200",
-    "Umrah Package - 5 Star": "https://images.unsplash.com/photo-1578303010-8e1d5c1b1c0a?w=1200",
-    "Hajj 2027 - Pre-Registration": "https://images.unsplash.com/photo-1591604466108-ec97de577aff?w=1200",
-    "Turkey Family Tour": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=1200",
-    "Malaysia Friends Tour": "https://images.unsplash.com/photo-1596422844803-f7a54d78f11b?w=1200",
-    "Dubai Luxury Tour": "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1200",
-  };
+  const docIds: string[] = selectedVisa ? visaData[selectedCountry]?.[selectedVisa] || [] : [];
 
-  const visaOffers: any = {
-    UAE: [
-      { type: "Visit Visa 30 Days", price: "PKR 45,000", time: "3-5 Working Days" },
-      { type: "Visit Visa 60 Days", price: "PKR 75,000", time: "3-5 Working Days" },
-      { type: "Work Visa", price: "PKR 150,000", time: "10-15 Working Days" },
-    ],
-    Saudi: [
-      { type: "Umrah Visa", price: "PKR 55,000", time: "24-48 Hours" },
-      { type: "Visit Visa", price: "PKR 60,000", time: "5-7 Working Days" },
-      { type: "Work Visa", price: "PKR 200,000", time: "15-20 Working Days" },
-    ],
-    USA: [
-      { type: "B1/B2 Visit Visa", price: "PKR 35,000 + Embassy Fee", time: "15-30 Days" },
-      { type: "Student Visa F1", price: "PKR 40,000 + SEVIS", time: "30-45 Days" },
-      { type: "Work Visa H1B", price: "Consultation Required", time: "60-90 Days" },
-    ],
-    Canada: [
-      { type: "Visitor Visa", price: "PKR 50,000", time: "20-30 Days" },
-      { type: "Study Permit", price: "PKR 55,000", time: "30-60 Days" },
-      { type: "Work Permit", price: "PKR 80,000", time: "45-60 Days" },
-    ],
-    UK: [
-      { type: "Standard Visitor", price: "PKR 60,000", time: "15-20 Days" },
-      { type: "Student Visa", price: "PKR 65,000", time: "3-6 Weeks" },
-      { type: "Skilled Worker", price: "PKR 120,000", time: "4 Weeks" },
-    ],
-    Schengen: [
-      { type: "Tourist Visa", price: "PKR 55,000", time: "15-20 Days" },
-      { type: "Business Visa", price: "PKR 60,000", time: "15-20 Days" },
-      { type: "Transit Visa", price: "PKR 40,000", time: "10-15 Days" },
-    ],
-    Pakistan: [
-      { type: "Visit Visa 30 Days", price: "PKR 15,000", time: "5-7 Working Days" },
-      { type: "Family Visit Visa", price: "PKR 20,000", time: "7-10 Working Days" },
-      { type: "Business Visa", price: "PKR 35,000", time: "10-15 Working Days" },
-    ],
-  };
+  useEffect(() => {
+    setTicks(new Array(docIds.length).fill(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedVisa, selectedCountry]);
 
-  const handleSubmit = async (e: any) => {
-  e.preventDefault();
-  if(!country || !visaType){
-    setResult("Please select Country and Visa Type");
-    return;
-  }
-  // GATE: If not signed, force signup
-  if(!isSignedUp){
-    setShowSignup(true);
-    return;
-  }
-  setResult("Submitting...");
-  try {
-    const phone = prompt("Enter your WhatsApp number:") || "03000000000";
-    await fetch("/api/leads",{
-      method:"POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({ name: "Customer", phone, country, visaType }),
-    });
-    setResult(`Lead Saved! We will call you for ${visaType} in ${country} in 5 mins.`);
-    setShowOffers(true);
-  } catch(err){
-    setResult(`Submitted for ${visaType} in ${country}`);
-    setShowOffers(true);
-  }
-}
+  const allTicked = ticks.length > 0 && ticks.every(Boolean);
 
-  const handleSignup = async (e: any) => {
-    e.preventDefault();
-    if (!form.name ||!form.email ||!form.phone) {
-      alert("Fill all fields");
+  const handleContinue = () => {
+    if (!name.trim() || !phone.trim()) {
+      setError(t("fillAll"));
       return;
     }
-    try {
-      await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: form.name, phone: form.phone, email: form.email, country, visaType }),
-      });
-      setIsSignedUp(true);
-      setShowSignup(false);
-    } catch {
-      setIsSignedUp(true);
-      setShowSignup(false);
+    if (phone.replace(/\D/g, "").length < 10) {
+      setError(t("badPhone"));
+      return;
     }
+    const newUser: User = { name: name.trim(), phone: phone.trim() };
+    try {
+      localStorage.setItem("nvp_user", JSON.stringify(newUser));
+    } catch {
+      // ignore
+    }
+    setUser(newUser);
+    setError("");
+    setShowAuth(false);
+    setIsSubmitted(true);
   };
 
+  const changeDetails = () => {
+    try {
+      localStorage.removeItem("nvp_user");
+    } catch {
+      // ignore
+    }
+    setUser(null);
+    setName("");
+    setPhone("");
+    setIsSubmitted(false);
+  };
+
+  // WhatsApp message is always in English so the business can read it
+  const buildWaLink = () => {
+    const lines = [
+      `Hello, my name is ${user?.name ?? ""}.`,
+      `I would like to apply for: ${countryNames[selectedCountry]?.en} - ${visaNames[selectedVisa]?.en}.`,
+      `My WhatsApp number: ${user?.phone ?? ""}.`,
+      `Documents ready:`,
+      ...docIds.map((id, i) => `${i + 1}. ${D[id]?.en ?? id}`),
+    ];
+    return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(lines.join("\n"))}`;
+  };
+
+  const dir = lang === "en" ? "ltr" : "rtl";
+
   return (
-  <div>
-  <main className="min-h-screen bg-gray-50">
-      {/* HEADER */}
-      <header className="bg-white shadow-lg sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-gradient-to-br from-green-800 to-green-400 rounded-2xl flex items-center justify-center text-white font-black">N</div>
-            <div>
-              <h1 className="font-black text-green-700 text-lg leading-none">Pakistan travel and visa Services</h1>
-              <p className="text-xs font-bold text-green-800">We Help You in Visa Processing</p>
-<p className="text-xs text-slate-500 mt-1">Trusted Since 2010 • Lahore • Pakistan</p>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <button onClick={() => setTab("visa")} className={`px-4 py-2 rounded-full font-bold text-sm ${tab === "visa"? "bg-green-600 text-white" : "bg-slate-100"}`}>Visa</button>
-            <button onClick={() => setTab("tours")} className={`px-4 py-2 rounded-full font-bold text-sm ${tab === "tours"? "bg-green-600 text-white" : "bg-slate-100"}`}>Tours</button>
+    <div dir={dir} lang={lang} className="min-h-screen bg-slate-50 p-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <h1 className="text-3xl font-bold text-center text-blue-700 pt-6">National Visas Portal PK</h1>
+        <p className="text-center text-sm text-gray-500 mt-1 mb-4">{t("tagline")}</p>
+
+        {/* Language selector */}
+        <div className="bg-white rounded-xl shadow p-3 mb-6">
+          <p className="text-center text-xs text-gray-500 mb-2">{t("chooseLang")}</p>
+          <div className="flex gap-2 justify-center">
+            {LANGS.map((l) => (
+              <button
+                key={l.code}
+                onClick={() => changeLang(l.code)}
+                className={`px-5 py-2 rounded-full border font-semibold ${
+                  lang === l.code ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-700"
+                }`}
+              >
+                {l.label}
+              </button>
+            ))}
           </div>
         </div>
-      </header>
 
-      {/* AD - TOP */}
-<div className="max-w-6xl mx-auto px-4 mt-3">
-  <div className="bg-slate-100 border-2 border-dashed rounded-xl h-[90px] flex items-center justify-center text-slate-400 text-xs font-bold">
-    📢 AD SPACE TOP - Google Ad Will Appear Here
-  </div>
-</div>
-      <div className="max-w-6xl mx-auto px-4 py-6">
-        {tab === "visa"? (
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-2xl p-6 shadow-lg">
-              <h2 className="text-2xl font-black mb-4">Check Visa Requirements {countryFlags[country] || "🌍"}</h2>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <select value={country} onChange={(e) => { setCountry(e.target.value); setVisaType(""); setShowOffers(false); setIsSignedUp(false); }} className="w-full border rounded-xl px-4 py-3 font-medium">
-                  <option value="">Select Country</option>
-                  {Object.keys(visaOffers).map((c) => <option key={c} value={c}>{countryFlags[c]} {c}</option>)}
-                </select>
-                {country && (
-                  <>
-                    <div className="rounded-xl overflow-hidden h-52 shadow"><img src={countryPhotos[country]} alt={country} className="w-full h-full object-cover" /></div>
-                    <select value={visaType} onChange={(e) => setVisaType(e.target.value)} className="w-full border rounded-xl px-4 py-3">
-                      <option value="">Select Visa Type</option>
-                      {visaOffers[country]?.map((v: any, i: number) => <option key={i} value={v.type}>{v.type} - {v.price}</option>)}
-                    </select>
-                  </>
-                )}
-                <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold">Check & Get Price →</button>
-              </form>
+        {user && (
+          <div className="bg-green-100 border border-green-400 p-3 rounded mb-4 text-center">
+            {t("welcome", { name: user.name })}
+          </div>
+        )}
 
-              {result && (
-                <div className="mt-6">
-                  {!isSignedUp? (
-                    <div className="bg-gradient-to-br from-blue-600 to-indigo-600 text-white p-6 rounded-2xl text-center">
-                      <p className="font-bold text-lg">🔒 {result}</p>
-                      <p className="text-sm opacity-90 mt-2">Free signup to unlock full checklist, documents, embassy fee & processing time</p>
-                      <button onClick={() => setShowSignup(true)} className="mt-4 bg-white text-blue-600 px-8 py-3 rounded-full font-black shadow">Unlock Free Checklist →</button>
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      {/* AD - SIDEBAR */}
-<div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-3 text-center">
-  <p className="text-[10px] font-bold text-slate-400">Sponsored</p>
-  <div className="h-60 bg-white rounded-xl mt-2 flex items-center justify-center text-xs text-slate-400">AD 300x250<br/>Your Earning Ad</div>
-</div>
-                      <div className="bg-green-50 border border-green-200 p-4 rounded-xl"><p className="font-bold text-green-800">✅ Unlocked! Hi {form.name}, sent to {form.email}</p></div>
-                      {visaOffers[country]?.filter((v: any) => v.type === visaType).map((v: any, i: number) => (
-                        <div key={i} className="border-2 border-green-200 rounded-xl p-4 bg-green-50">
-                          <h3 className="font-bold">{v.type}</h3>
-                          <p className="text-2xl font-black text-green-600 mt-2">{v.price}</p>
-                          <p className="text-sm text-slate-500">{v.time}</p>
-                          <p className="text-sm mt-3">📄 Full docs will be WhatsApped to {form.phone} + emailed</p>
-                          <a href={`https://wa.me/923000000000?text=Hi, I need ${v.type} for ${country}`} className="mt-3 inline-block w-full text-center bg-green-600 text-white py-2 rounded-xl font-bold">Chat on WhatsApp</a>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
+        {!selectedVisa ? (
+          <>
+            <h2 className="font-semibold mb-2">{t("selectCountry")}</h2>
+            <div className="flex flex-wrap gap-2 mb-6">
+              {countries.map((c) => (
+                <button
+                  key={c}
+                  onClick={() => {
+                    setSelectedCountry(c);
+                    setSelectedVisa("");
+                    setIsSubmitted(false);
+                  }}
+                  className={`px-4 py-2 rounded-full border ${
+                    selectedCountry === c ? "bg-blue-600 text-white" : "bg-white"
+                  }`}
+                >
+                  {countryNames[c][lang]}
+                </button>
+              ))}
             </div>
 
-            <div className="space-y-4">
-              <div className="bg-white rounded-2xl p-6 shadow">
-                <h3 className="font-black mb-3">Why National Visas?</h3>
-                <ul className="text-sm space-y-2 text-slate-700"><li>✅ 15 Years Experience</li><li>✅ 10,000+ Visas Approved</li><li>✅ WhatsApp Support 24/7</li><li>✅ Money Back Guarantee</li><li>✅ Office in Lahore</li></ul>
-              </div>
-              {country && showOffers && (
-                <div className="bg-white rounded-2xl p-4 shadow">
-                  <h4 className="font-bold">Popular in {country} {countryFlags[country]}</h4>
-                  <div className="grid grid-cols-2 gap-2 mt-3">
-                    {visaOffers[country]?.map((v: any, i: number) => <div key={i} className="bg-slate-50 p-3 rounded-xl text-xs"><p className="font-bold truncate">{v.type}</p><p className="text-green-600 font-black mt-1">{v.price}</p></div>)}
+            <h2 className="font-semibold mb-2">
+              {t("selectVisa", { country: countryNames[selectedCountry][lang] })}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {Object.keys(visaData[selectedCountry] || {}).map((v) => (
+                <button
+                  key={v}
+                  onClick={() => setSelectedVisa(v)}
+                  className="bg-white p-4 rounded-xl shadow border text-start hover:border-blue-500"
+                >
+                  <div className="font-bold">{visaNames[v][lang]}</div>
+                  <div className="text-sm text-gray-500">{t("tapChecklist")}</div>
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-gray-500 mt-4">{t("feeNote")}</p>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={() => {
+                setSelectedVisa("");
+                setIsSubmitted(false);
+              }}
+              className="mb-4 text-blue-600"
+            >
+              {t("back")}
+            </button>
+            <div className="bg-white rounded-xl shadow p-6">
+              <h2 className="text-xl font-bold mb-1">
+                {countryNames[selectedCountry][lang]} — {visaNames[selectedVisa][lang]}
+              </h2>
+
+              {!isSubmitted ? (
+                <>
+                  <p className="text-sm text-gray-500 mb-4">{t("tickIntro")}</p>
+                  {docIds.map((id, i) => (
+                    <label key={id} className="flex items-center gap-3 py-3 border-b cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={ticks[i] || false}
+                        onChange={() => {
+                          const n = [...ticks];
+                          n[i] = !n[i];
+                          setTicks(n);
+                        }}
+                        className="w-5 h-5 accent-blue-600"
+                      />
+                      <span className="text-[15px]">
+                        {i + 1}. {D[id][lang]}
+                      </span>
+                    </label>
+                  ))}
+
+                  <button
+                    disabled={!allTicked}
+                    onClick={() => {
+                      if (!user) setShowAuth(true);
+                      else setIsSubmitted(true);
+                    }}
+                    className={`w-full mt-6 py-3 rounded-lg font-bold text-white ${
+                      allTicked ? "bg-blue-600" : "bg-gray-300"
+                    }`}
+                  >
+                    {allTicked ? t("submit") : t("submitDisabled")}
+                  </button>
+                </>
+              ) : (
+                <div className="text-center py-6">
+                  <div className="text-5xl mb-3">✅</div>
+                  <h3 className="text-xl font-bold text-green-700">{t("readyTitle")}</h3>
+                  <p className="mt-2">
+                    {t("readyBody", { name: user?.name ?? "", visa: visaNames[selectedVisa][lang] })}
+                  </p>
+                  <a
+                    href={buildWaLink()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-4 bg-green-600 text-white px-6 py-3 rounded-lg font-bold"
+                  >
+                    💬 {t("sendWA")} ({WHATSAPP_DISPLAY})
+                  </a>
+                  <div className="mt-6 flex flex-col gap-2">
+                    <button
+                      onClick={() => {
+                        setIsSubmitted(false);
+                        setSelectedVisa("");
+                      }}
+                      className="text-blue-600 text-sm"
+                    >
+                      {t("another")}
+                    </button>
+                    <button onClick={changeDetails} className="text-gray-500 text-xs">
+                      {t("changeDetails")}
+                    </button>
                   </div>
                 </div>
               )}
             </div>
-          </div>
-        ) : (
-          <div>
-            <h2 className="text-2xl font-black mb-4">Our Tour Packages</h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {Object.keys(tourPhotos).map((t) => (
-                <div key={t} className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition">
-                  <img src={tourPhotos[t]} className="h-48 w-full object-cover" alt={t} />
-                  <div className="p-4"><h3 className="font-bold">{t}</h3><p className="text-sm text-slate-500 mt-1">All inclusive • Guide • Hotel • Visa</p><button onClick={() => setTour(t)} className="mt-3 w-full bg-green-600 text-white py-2 rounded-xl font-bold">View Details →</button></div>
-                </div>
-              ))}
+          </>
+        )}
+
+        {/* Details modal */}
+        {showAuth && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-xl p-6 w-full max-w-md">
+              <h3 className="text-xl font-bold text-center mb-4">{t("authTitle")}</h3>
+
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder={t("fullName")}
+                className="w-full border p-3 rounded mb-3"
+              />
+              <input
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder={t("phone")}
+                inputMode="tel"
+                dir="ltr"
+                className="w-full border p-3 rounded mb-3"
+              />
+
+              {error && <p className="text-red-600 text-sm mb-3">{error}</p>}
+
+              <button onClick={handleContinue} className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold">
+                {t("continue")}
+              </button>
+              <button
+                onClick={() => {
+                  setShowAuth(false);
+                  setError("");
+                }}
+                className="w-full mt-3 text-sm text-gray-500"
+              >
+                {t("cancel")}
+              </button>
             </div>
           </div>
-     </div>
-<div>
+        )}
 
-    {showSignup && (
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-        <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl">
-          <h2 className="font-black text-xl">Get Free Visa Checklist!</h2>
-          <p className="text-sm text-slate-500 mt-1 mb-4">Enter details to unlock</p>
-          <form onSubmit={handleSignup} className="space-y-3">
-            <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Full Name" className="w-full border rounded-lg p-2" required />
-            <input value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="Email Address" type="email" className="w-full border rounded-lg p-2" required />
-            <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="WhatsApp No" className="w-full border rounded-lg p-2" required />
-            <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg font-bold">Unlock Free Checklist</button>
-          </form>
-          <button onClick={() => setShowSignup(false)} className="w-full mt-3 text-sm text-slate-500">Cancel</button>
-        </div>
+        <p className="text-center text-xs text-gray-400 mt-10 mb-4">
+          © 2026 National Visas Portal PK — {t("footer")}
+        </p>
       </div>
-    )}
-
-    <footer className="bg-slate-900 text-white py-8 text-center text-sm">
-      <p>© 2025 National Visas Portal PK - All Rights Reserved</p>
-    </footer>
-  </div>
-</div>
-);
+    </div>
+  );
 }
