@@ -114,6 +114,8 @@ const T: Record<string, L3> = {
     ar: "نحن شركة استشارات تأشيرات مستقلة. لسنا سفارة ولا جهة حكومية، ولا يمكننا ضمان الموافقة على التأشيرة.",
   },
   footer: { en: "All rights reserved", ur: "جملہ حقوق محفوظ ہیں", ar: "جميع الحقوق محفوظة" },
+  privacy: { en: "Privacy Policy", ur: "پرائیویسی پالیسی", ar: "سياسة الخصوصية" },
+  contact: { en: "Contact", ur: "رابطہ", ar: "اتصل بنا" },
 };
 
 /* ---------- Names ---------- */
@@ -130,6 +132,7 @@ const visaNames: Record<string, L3> = {
   business: { en: "Business Visa", ur: "بزنس ویزا", ar: "تأشيرة أعمال" },
   work: { en: "Work Visa", ur: "ورک ویزا", ar: "تأشيرة عمل" },
   umrah: { en: "Umrah Visa", ur: "عمرہ ویزا", ar: "تأشيرة عمرة" },
+  student: { en: "Student Visa", ur: "اسٹوڈنٹ ویزا", ar: "تأشيرة دراسة" },
 };
 
 /* ---------- Documents ---------- */
@@ -178,6 +181,51 @@ const D: Record<string, L3> = {
   companyDocs: { en: "Company documents", ur: "کمپنی کے دستاویزات", ar: "وثائق الشركة" },
   invitation: { en: "Invitation letter (if any)", ur: "دعوت نامہ (اگر ہو)", ar: "خطاب دعوة (إن وجد)" },
   empLetter: { en: "Employment letter", ur: "ملازمت کا خط", ar: "خطاب التوظيف" },
+  admission: {
+    en: "Admission / acceptance letter from the institution",
+    ur: "تعلیمی ادارے کا داخلہ / قبولیت نامہ",
+    ar: "خطاب القبول من المؤسسة التعليمية",
+  },
+  academic: {
+    en: "Academic transcripts and certificates",
+    ur: "تعلیمی اسناد اور ٹرانسکرپٹس",
+    ar: "السجلات والشهادات الأكاديمية",
+  },
+  english: {
+    en: "English test result (IELTS / TOEFL), if required",
+    ur: "انگریزی ٹیسٹ کا نتیجہ (آئیلٹس / ٹوئفل)، اگر درکار ہو",
+    ar: "نتيجة اختبار اللغة الإنجليزية (آيلتس / توفل) إن لزم",
+  },
+  funds: {
+    en: "Proof of funds (bank statement or sponsor letter)",
+    ur: "مالی استطاعت کا ثبوت (بینک اسٹیٹمنٹ یا اسپانسر کا خط)",
+    ar: "إثبات القدرة المالية (كشف حساب أو خطاب الكفيل)",
+  },
+  tuition: {
+    en: "Tuition fee payment receipt",
+    ur: "ٹیوشن فیس کی ادائیگی کی رسید",
+    ar: "إيصال دفع الرسوم الدراسية",
+  },
+  i20: {
+    en: "Form I-20 and SEVIS fee receipt",
+    ur: "فارم I-20 اور SEVIS فیس کی رسید",
+    ar: "نموذج I-20 وإيصال رسوم SEVIS",
+  },
+  ds160: {
+    en: "DS-160 confirmation page",
+    ur: "DS-160 کنفرمیشن پیج",
+    ar: "صفحة تأكيد DS-160",
+  },
+  cas: {
+    en: "Confirmation of Acceptance for Studies (CAS)",
+    ur: "CAS (تعلیم کے لیے قبولیت کی تصدیق)",
+    ar: "تأكيد القبول للدراسة (CAS)",
+  },
+  tb: {
+    en: "Tuberculosis (TB) test certificate, if required",
+    ur: "ٹی بی ٹیسٹ سرٹیفکیٹ، اگر درکار ہو",
+    ar: "شهادة فحص السل (TB) إن لزم",
+  },
 };
 
 const visaData: Record<string, Record<string, string[]>> = {
@@ -185,40 +233,47 @@ const visaData: Record<string, Record<string, string[]>> = {
     visit: ["passport6", "photoWhite", "cnic", "returnTicket"],
     business: ["passport6", "photoWhite", "cnic", "bank6", "companyLetter"],
     work: ["passport6", "photoWhite", "cnic", "educational", "experience"],
+    student: ["passport6", "photoWhite", "cnic", "admission", "academic", "funds"],
   },
   Turkey: {
     visit: ["passportCopy", "photo", "cnic", "bank3", "frc"],
     business: ["passportCopy", "photo", "ntnCert", "bank6", "chamber"],
+    student: ["passportCopy", "photo", "cnic", "admission", "academic", "funds"],
   },
   Saudi: {
     umrah: ["passport8", "photoWhite", "cnic", "vaccine"],
     work: ["passportCopy", "photo", "cnic", "medical", "degreeAtt"],
+    student: ["passportCopy", "photo", "cnic", "admission", "academic", "medical", "funds"],
   },
   USA: {
     visit: ["passportCopy", "photo5", "bank6", "jobLetter"],
     business: ["passportCopy", "photo5", "companyDocs", "bankGen", "invitation"],
+    student: ["passportCopy", "photo5", "i20", "ds160", "academic", "english", "funds"],
   },
   UK: {
     visit: ["passportCopy", "photo", "bank6", "empLetter", "cnic"],
+    student: ["passportCopy", "photo", "cas", "academic", "english", "funds", "tb", "tuition"],
   },
 };
 
 const countries = Object.keys(visaData);
 
 /* ---------- Blurred background scenes ---------- */
-type Scene = "UAE" | "Turkey" | "Saudi" | "USA" | "UK" | "work" | "business";
+type Scene = "UAE" | "Turkey" | "Saudi" | "USA" | "UK" | "work" | "business" | "student";
 
+// Softer, greyer sky colours so the pictures stay visible without being harsh
 const SKY: Record<Scene, [string, string]> = {
-  UAE: ["#f59e0b", "#7c2d12"],
-  Turkey: ["#f87171", "#7f1d1d"],
-  Saudi: ["#facc15", "#78350f"],
-  USA: ["#60a5fa", "#1e3a8a"],
-  UK: ["#94a3b8", "#334155"],
-  work: ["#fb923c", "#44403c"],
-  business: ["#38bdf8", "#0f172a"],
+  UAE: ["#fcd34d", "#9a7b5a"],
+  Turkey: ["#fca5a5", "#8f6f6f"],
+  Saudi: ["#fde68a", "#a08c5a"],
+  USA: ["#93c5fd", "#6b7f9e"],
+  UK: ["#cbd5e1", "#707b8a"],
+  work: ["#fdba74", "#7d776f"],
+  business: ["#7dd3fc", "#6b7a8c"],
+  student: ["#a5b4fc", "#707b8a"],
 };
 
-const INK = "#0b1220";
+const INK = "#334155";
 
 // Construction worker: yellow helmet, tool in hand, sweat drops
 function Worker({ x, s = 1.5, tool }: { x: number; s?: number; tool: "hammer" | "shovel" | "wrench" }) {
@@ -282,6 +337,23 @@ function Suit({ x, s = 1.5, woman = false }: { x: number; s?: number; woman?: bo
           <rect x="22" y="-72" width="34" height="24" rx="4" fill="#92400e" />
         </>
       )}
+    </g>
+  );
+}
+
+// Student: graduation cap, backpack and a book
+function Student({ x, s = 1.5 }: { x: number; s?: number }) {
+  return (
+    <g transform={`translate(${x} 600) scale(${s})`} fill={INK}>
+      <rect x="-31" y="-140" width="16" height="48" rx="6" fill="#1e293b" />
+      <circle cx="0" cy="-166" r="13" />
+      <path d="M-24 -184 L0 -196 L24 -184 L0 -172Z" fill="#1e293b" />
+      <path d="M20 -185 L20 -166" stroke="#f59e0b" strokeWidth="3" fill="none" />
+      <path d="M-26 -150 L26 -150 L22 -68 L-22 -68Z" />
+      <rect x="-15" y="-70" width="12" height="70" />
+      <rect x="3" y="-70" width="12" height="70" />
+      <path d="M22 -140 L34 -104" stroke={INK} strokeWidth="8" strokeLinecap="round" fill="none" />
+      <rect x="24" y="-112" width="26" height="18" rx="2" fill="#2563eb" />
     </g>
   );
 }
@@ -436,6 +508,27 @@ function SceneArt({ scene }: { scene: Scene }) {
           <Worker x={1000} tool="hammer" />
         </g>
       );
+    case "student":
+      return (
+        <g fill={INK}>
+          <rect x="0" y="590" width="1200" height="10" />
+          <rect x="330" y="340" width="540" height="260" />
+          <path d="M305 340 L600 215 L895 340Z" />
+          <circle cx="600" cy="290" r="22" fill="#e2e8f0" opacity="0.7" />
+          <rect x="596" y="150" width="4" height="62" />
+          <path d="M600 150 L650 165 L600 180Z" fill="#ef4444" opacity="0.85" />
+          {[0, 1, 2, 3, 4, 5].map((i) => (
+            <rect key={`col${i}`} x={365 + i * 90} y="365" width="26" height="215" fill="#e2e8f0" opacity="0.4" />
+          ))}
+          <rect x="300" y="560" width="600" height="40" opacity="0.9" />
+          <rect x="60" y="430" width="140" height="170" opacity="0.55" />
+          <rect x="1000" y="410" width="150" height="190" opacity="0.55" />
+          <Student x={180} />
+          <Student x={470} s={1.3} />
+          <Student x={690} s={1.6} />
+          <Student x={940} />
+        </g>
+      );
     case "business":
       return (
         <g>
@@ -463,17 +556,17 @@ function SceneArt({ scene }: { scene: Scene }) {
 function Backdrop({ scene }: { scene: Scene }) {
   const [top, bottom] = SKY[scene];
   return (
-    <div aria-hidden className="fixed inset-0 z-0 overflow-hidden bg-neutral-800">
+    <div aria-hidden className="fixed inset-0 z-0 overflow-hidden bg-neutral-600">
       <div key={scene} className="nvp-fade absolute inset-0" style={{ background: `linear-gradient(to bottom, ${top}, ${bottom})` }}>
         <svg
           viewBox="0 0 1200 600"
           preserveAspectRatio="xMidYMax slice"
-          className="absolute inset-0 h-full w-full scale-110 opacity-80 blur-[4px]"
+          className="absolute inset-0 h-full w-full scale-110 opacity-100 blur-[2px]"
         >
           <SceneArt scene={scene} />
         </svg>
       </div>
-      <div className="absolute inset-0 bg-neutral-900/55" />
+      <div className="absolute inset-0 bg-gradient-to-b from-neutral-800/60 via-neutral-700/25 to-neutral-600/5" />
     </div>
   );
 }
@@ -653,7 +746,13 @@ export default function Page() {
 
   // Background: work and business visas get their own scene, everything else shows the country landmark
   const scene: Scene =
-    selectedVisa === "work" ? "work" : selectedVisa === "business" ? "business" : (selectedCountry as Scene);
+    selectedVisa === "work"
+      ? "work"
+      : selectedVisa === "business"
+      ? "business"
+      : selectedVisa === "student"
+      ? "student"
+      : (selectedCountry as Scene);
 
   // Bold, stylish heading font (Latin: Montserrat, Urdu/Arabic: Noto Sans Arabic)
   const headStyle = {
@@ -689,10 +788,13 @@ export default function Page() {
         {/* Main column */}
         <div className="min-w-0 w-full max-w-4xl">
           {/* Header */}
-          <h1 style={headStyle} className={`${H} text-4xl sm:text-5xl text-center text-white pt-6 uppercase`}>
-            National Visas Portal <span className="text-green-400">PK</span>
+          <h1 style={headStyle} className={`${H} text-3xl sm:text-5xl text-center text-white pt-6`}>
+            Pakistan Travel and <span className="text-green-400">Visa Services</span>
           </h1>
-          <p className="text-center text-sm text-neutral-300 mt-1 mb-4">{t("tagline")}</p>
+          <p style={headStyle} className="text-center text-lg font-extrabold text-green-300 drop-shadow mt-1">
+            Paktravel.pk
+          </p>
+          <p className="text-center text-sm text-white drop-shadow mt-1 mb-4">{t("tagline")}</p>
 
           {!user && (
             <div className="flex justify-center mb-4">
@@ -882,8 +984,12 @@ export default function Page() {
           {!isSubmitted && <AdSlot slot={SLOT_INLINE} label={t("adLabel")} className="mt-8" />}
 
           <p className="text-center text-xs text-neutral-300 mt-8 max-w-xl mx-auto">{t("disclaimer")}</p>
-          <p className="text-center text-xs text-neutral-400 mt-4 mb-4">
-            © 2026 National Visas Portal PK — {t("footer")}
+          <p className="text-center text-sm text-white drop-shadow mt-4">
+            <a href="/privacy" className="underline mx-3">{t("privacy")}</a>
+            <a href="/contact" className="underline mx-3">{t("contact")}</a>
+          </p>
+          <p className="text-center text-xs text-neutral-100 drop-shadow mt-3 mb-4">
+            © 2026 Pakistan Travel and Visa Services (Paktravel.pk) — {t("footer")}
           </p>
         </div>
 
