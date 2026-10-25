@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pakistan Travel and Visa Services | Paktravel.pk",,
+  title: "Pakistan Travel and Visa Services | Paktravel.pk",
   description: "Visa guidance and document checklists for UAE, Turkey, Saudi Arabia, USA and UK. Visit, business, work and student visas.",
 };
 
