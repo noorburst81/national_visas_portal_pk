@@ -322,27 +322,35 @@ const countries = Object.keys(visaData);
 /* ---------- Blurred background scenes ---------- */
 type Scene = "UAE" | "Turkey" | "Saudi" | "USA" | "UK" | "work" | "business" | "student";
 
-// Bright, vivid sky colours so each scene stands out clearly against the black page
-const SKY: Record<Scene, [string, string]> = {
-  UAE: ["#fbbf24", "#ea580c"],
-  Turkey: ["#fb7185", "#be123c"],
-  Saudi: ["#fde047", "#d97706"],
-  USA: ["#60a5fa", "#1d4ed8"],
-  UK: ["#7dd3fc", "#3b6fa8"],
-  work: ["#fdba74", "#ea580c"],
-  business: ["#38bdf8", "#1e40af"],
-  student: ["#a78bfa", "#4f46e5"],
+// Sunset skies: black at the top, a coloured middle, and a bright glowing horizon where the landmarks stand
+const SKY: Record<Scene, [string, string, string]> = {
+  UAE: ["#07050d", "#7c2d12", "#fb923c"],
+  Turkey: ["#07050d", "#881337", "#fb923c"],
+  Saudi: ["#07050d", "#78350f", "#facc15"],
+  USA: ["#05060f", "#4c1d95", "#f97316"],
+  UK: ["#05060f", "#334155", "#fdba74"],
+  work: ["#07050d", "#7f1d1d", "#fb923c"],
+  business: ["#05060f", "#312e81", "#fb923c"],
+  student: ["#05060f", "#5b21b6", "#fdba74"],
 };
 
-const INK = "#1e293b";
+// Colour of the setting sun behind each scene (red, green, blue)
+const GLOW: Record<Scene, string> = {
+  UAE: "255,176,64",
+  Turkey: "255,122,84",
+  Saudi: "255,200,70",
+  USA: "255,140,60",
+  UK: "255,190,130",
+  work: "255,150,60",
+  business: "255,150,90",
+  student: "255,180,120",
+};
+
+const INK = "#150d1c";
 
 // Real photos for some countries (free Unsplash images). If a photo cannot load, the drawn scene stays visible.
 // You can also add your own photos at public/bg/<scene>.jpg, for example public/bg/UAE.jpg; those are tried first.
 const PHOTOS: Partial<Record<Scene, string>> = {
-  UAE: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1800&q=80",
-  Saudi: "https://images.unsplash.com/photo-1591604466108-ec97de577aff?auto=format&fit=crop&w=1800&q=80",
-  USA: "https://images.unsplash.com/photo-1485738422979-b5d0a3a0a6a7?auto=format&fit=crop&w=1800&q=80",
-  UK: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1800&q=80",
 };
 
 // Construction worker: yellow helmet, tool in hand, sweat drops
@@ -654,10 +662,22 @@ function PhotoLayer({ scene }: { scene: Scene }) {
 
 // Full-screen scene that resizes to any phone, tablet or desktop screen
 function Backdrop({ scene }: { scene: Scene }) {
-  const [top, bottom] = SKY[scene];
+  const [top, mid, bottom] = SKY[scene];
+  const glow = GLOW[scene];
   return (
-    <div aria-hidden className="fixed inset-0 z-0 overflow-hidden bg-black">
-      <div key={scene} className="nvp-fade absolute inset-0" style={{ background: `linear-gradient(to bottom, ${top}, ${bottom})` }}>
+    <div aria-hidden className="fixed left-0 top-0 z-0 h-[100lvh] w-full overflow-hidden bg-black">
+      <div
+        key={scene}
+        className="nvp-fade absolute inset-0"
+        style={{ background: `linear-gradient(to bottom, ${top} 0%, ${mid} 55%, ${bottom} 100%)` }}
+      >
+        {/* the setting sun behind the landmarks */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `radial-gradient(ellipse 70% 45% at 50% 88%, rgba(${glow},0.95), rgba(${glow},0.4) 45%, transparent 75%)`,
+          }}
+        />
         <svg
           viewBox="0 0 1200 600"
           preserveAspectRatio="xMidYMax slice"
@@ -666,6 +686,13 @@ function Backdrop({ scene }: { scene: Scene }) {
           <SceneArt scene={scene} />
         </svg>
         <PhotoLayer scene={scene} />
+        {/* sunset tint over everything: dark sky above, warm light near the ground */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(to top, rgba(${glow},0.4), transparent 55%), linear-gradient(to bottom, rgba(0,0,0,0.6), transparent 45%)`,
+          }}
+        />
       </div>
     </div>
   );
@@ -1118,6 +1145,17 @@ export default function Page() {
           </div>
         </aside>
       </div>
+
+      {/* WhatsApp button that stays on screen */}
+      <a
+        href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hello, I need visa information.")}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="WhatsApp"
+        className="fixed bottom-4 end-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-green-600 text-2xl shadow-lg hover:bg-green-700"
+      >
+        💬
+      </a>
 
       {/* Sign-up modal */}
       {showAuth && (
