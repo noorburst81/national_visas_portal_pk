@@ -116,6 +116,16 @@ const T: Record<string, L3> = {
   footer: { en: "All rights reserved", ur: "جملہ حقوق محفوظ ہیں", ar: "جميع الحقوق محفوظة" },
   privacy: { en: "Privacy Policy", ur: "پرائیویسی پالیسی", ar: "سياسة الخصوصية" },
   contact: { en: "Contact", ur: "رابطہ", ar: "اتصل بنا" },
+  notSure: {
+    en: "Can't find your visa type? Ask us on WhatsApp",
+    ur: "آپ کا ویزا نہیں مل رہا؟ ہم سے واٹس ایپ پر پوچھیں",
+    ar: "لم تجد نوع التأشيرة؟ اسألنا عبر واتساب",
+  },
+  reqNote: {
+    en: "Requirements can change, so we confirm the exact list for your case before you apply.",
+    ur: "شرائط تبدیل ہو سکتی ہیں، اس لیے درخواست سے پہلے ہم آپ کے کیس کی درست فہرست کی تصدیق کرتے ہیں۔",
+    ar: "قد تتغير المتطلبات، لذلك نؤكد لك القائمة الدقيقة لحالتك قبل التقديم.",
+  },
 };
 
 /* ---------- Names ---------- */
@@ -133,6 +143,8 @@ const visaNames: Record<string, L3> = {
   work: { en: "Work Visa", ur: "ورک ویزا", ar: "تأشيرة عمل" },
   umrah: { en: "Umrah Visa", ur: "عمرہ ویزا", ar: "تأشيرة عمرة" },
   student: { en: "Student Visa", ur: "اسٹوڈنٹ ویزا", ar: "تأشيرة دراسة" },
+  family: { en: "Family Visa", ur: "فیملی ویزا", ar: "تأشيرة عائلية" },
+  transit: { en: "Transit Visa", ur: "ٹرانزٹ ویزا", ar: "تأشيرة عبور" },
 };
 
 /* ---------- Documents ---------- */
@@ -226,33 +238,82 @@ const D: Record<string, L3> = {
     ur: "ٹی بی ٹیسٹ سرٹیفکیٹ، اگر درکار ہو",
     ar: "شهادة فحص السل (TB) إن لزم",
   },
+  sponsor: {
+    en: "Sponsor's passport and residence ID copy",
+    ur: "اسپانسر کے پاسپورٹ اور رہائشی شناختی کارڈ کی کاپی",
+    ar: "نسخة من جواز سفر الكفيل وهوية الإقامة",
+  },
+  relation: {
+    en: "Proof of relationship (marriage or birth certificate)",
+    ur: "رشتے کا ثبوت (نکاح نامہ یا برتھ سرٹیفکیٹ)",
+    ar: "إثبات صلة القرابة (عقد زواج أو شهادة ميلاد)",
+  },
+  onward: {
+    en: "Confirmed onward ticket and visa for the final destination",
+    ur: "اگلی منزل کا کنفرم ٹکٹ اور ویزا",
+    ar: "تذكرة مؤكدة وتأشيرة للوجهة النهائية",
+  },
+  jobOffer: {
+    en: "Job offer or employment contract",
+    ur: "ملازمت کی پیشکش یا معاہدہ",
+    ar: "عرض عمل أو عقد توظيف",
+  },
+  cos: {
+    en: "Certificate of Sponsorship (CoS) from the employer",
+    ur: "آجر کی طرف سے سرٹیفکیٹ آف اسپانسرشپ (CoS)",
+    ar: "شهادة الكفالة (CoS) من صاحب العمل",
+  },
+  petition: {
+    en: "Approved employer petition (for example Form I-797)",
+    ur: "آجر کی منظور شدہ پٹیشن (مثلاً فارم I-797)",
+    ar: "عريضة معتمدة من صاحب العمل (مثل نموذج I-797)",
+  },
+  hotel: {
+    en: "Hotel booking or accommodation proof",
+    ur: "ہوٹل بکنگ یا رہائش کا ثبوت",
+    ar: "حجز فندق أو إثبات السكن",
+  },
 };
 
 const visaData: Record<string, Record<string, string[]>> = {
   UAE: {
     visit: ["passport6", "photoWhite", "cnic", "returnTicket"],
+    family: ["passport6", "photoWhite", "cnic", "sponsor", "relation"],
     business: ["passport6", "photoWhite", "cnic", "bank6", "companyLetter"],
     work: ["passport6", "photoWhite", "cnic", "educational", "experience"],
     student: ["passport6", "photoWhite", "cnic", "admission", "academic", "funds"],
+    transit: ["passport6", "photoWhite", "onward"],
   },
   Turkey: {
     visit: ["passportCopy", "photo", "cnic", "bank3", "frc"],
+    family: ["passportCopy", "photo", "cnic", "sponsor", "relation", "bank3"],
     business: ["passportCopy", "photo", "ntnCert", "bank6", "chamber"],
+    work: ["passportCopy", "photo", "cnic", "jobOffer", "educational", "experience"],
     student: ["passportCopy", "photo", "cnic", "admission", "academic", "funds"],
+    transit: ["passportCopy", "photo", "onward"],
   },
   Saudi: {
     umrah: ["passport8", "photoWhite", "cnic", "vaccine"],
+    visit: ["passportCopy", "photo", "cnic", "bank6", "hotel"],
+    family: ["passportCopy", "photo", "cnic", "sponsor", "relation"],
+    business: ["passportCopy", "photo", "ntnCert", "invitation", "bank6"],
     work: ["passportCopy", "photo", "cnic", "medical", "degreeAtt"],
     student: ["passportCopy", "photo", "cnic", "admission", "academic", "medical", "funds"],
   },
   USA: {
     visit: ["passportCopy", "photo5", "bank6", "jobLetter"],
     business: ["passportCopy", "photo5", "companyDocs", "bankGen", "invitation"],
+    work: ["passportCopy", "photo5", "petition", "educational", "experience", "ds160"],
     student: ["passportCopy", "photo5", "i20", "ds160", "academic", "english", "funds"],
+    transit: ["passportCopy", "photo5", "onward", "ds160"],
   },
   UK: {
     visit: ["passportCopy", "photo", "bank6", "empLetter", "cnic"],
+    business: ["passportCopy", "photo", "bank6", "companyDocs", "invitation"],
+    work: ["passportCopy", "photo", "cos", "educational", "english", "funds", "tb"],
     student: ["passportCopy", "photo", "cas", "academic", "english", "funds", "tb", "tuition"],
+    family: ["passportCopy", "photo", "sponsor", "relation", "english", "funds", "tb"],
+    transit: ["passportCopy", "photo", "onward"],
   },
 };
 
@@ -261,19 +322,28 @@ const countries = Object.keys(visaData);
 /* ---------- Blurred background scenes ---------- */
 type Scene = "UAE" | "Turkey" | "Saudi" | "USA" | "UK" | "work" | "business" | "student";
 
-// Softer, greyer sky colours so the pictures stay visible without being harsh
+// Bright, vivid sky colours so each scene stands out clearly against the black page
 const SKY: Record<Scene, [string, string]> = {
-  UAE: ["#fcd34d", "#9a7b5a"],
-  Turkey: ["#fca5a5", "#8f6f6f"],
-  Saudi: ["#fde68a", "#a08c5a"],
-  USA: ["#93c5fd", "#6b7f9e"],
-  UK: ["#cbd5e1", "#707b8a"],
-  work: ["#fdba74", "#7d776f"],
-  business: ["#7dd3fc", "#6b7a8c"],
-  student: ["#a5b4fc", "#707b8a"],
+  UAE: ["#fbbf24", "#ea580c"],
+  Turkey: ["#fb7185", "#be123c"],
+  Saudi: ["#fde047", "#d97706"],
+  USA: ["#60a5fa", "#1d4ed8"],
+  UK: ["#7dd3fc", "#3b6fa8"],
+  work: ["#fdba74", "#ea580c"],
+  business: ["#38bdf8", "#1e40af"],
+  student: ["#a78bfa", "#4f46e5"],
 };
 
-const INK = "#334155";
+const INK = "#1e293b";
+
+// Real photos for some countries (free Unsplash images). If a photo cannot load, the drawn scene stays visible.
+// You can also add your own photos at public/bg/<scene>.jpg, for example public/bg/UAE.jpg; those are tried first.
+const PHOTOS: Partial<Record<Scene, string>> = {
+  UAE: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1800&q=80",
+  Saudi: "https://images.unsplash.com/photo-1591604466108-ec97de577aff?auto=format&fit=crop&w=1800&q=80",
+  USA: "https://images.unsplash.com/photo-1485738422979-b5d0a3a0a6a7?auto=format&fit=crop&w=1800&q=80",
+  UK: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1800&q=80",
+};
 
 // Construction worker: yellow helmet, tool in hand, sweat drops
 function Worker({ x, s = 1.5, tool }: { x: number; s?: number; tool: "hammer" | "shovel" | "wrench" }) {
@@ -553,20 +623,50 @@ function SceneArt({ scene }: { scene: Scene }) {
   }
 }
 
+// Tries your own photo first, then the web photo, and fades it in over the drawn scene once it loads
+function PhotoLayer({ scene }: { scene: Scene }) {
+  const sources = [`/bg/${scene}.jpg`, PHOTOS[scene]].filter(Boolean) as string[];
+  const [idx, setIdx] = useState(0);
+  const [ok, setOk] = useState(false);
+  if (idx >= sources.length) return null;
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      key={sources[idx]}
+      src={sources[idx]}
+      alt=""
+      ref={(el) => {
+        if (!el || ok || !el.complete) return;
+        if (el.naturalWidth > 0) setOk(true);
+        else setIdx(idx + 1);
+      }}
+      onLoad={() => setOk(true)}
+      onError={() => {
+        setOk(false);
+        setIdx(idx + 1);
+      }}
+      className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+        ok ? "opacity-100" : "opacity-0"
+      }`}
+    />
+  );
+}
+
+// Full-screen scene that resizes to any phone, tablet or desktop screen
 function Backdrop({ scene }: { scene: Scene }) {
   const [top, bottom] = SKY[scene];
   return (
-    <div aria-hidden className="fixed inset-0 z-0 overflow-hidden bg-neutral-600">
+    <div aria-hidden className="fixed inset-0 z-0 overflow-hidden bg-black">
       <div key={scene} className="nvp-fade absolute inset-0" style={{ background: `linear-gradient(to bottom, ${top}, ${bottom})` }}>
         <svg
           viewBox="0 0 1200 600"
           preserveAspectRatio="xMidYMax slice"
-          className="absolute inset-0 h-full w-full scale-110 opacity-100 blur-[2px]"
+          className="absolute inset-0 h-full w-full saturate-150 blur-[1px]"
         >
           <SceneArt scene={scene} />
         </svg>
+        <PhotoLayer scene={scene} />
       </div>
-      <div className="absolute inset-0 bg-gradient-to-b from-neutral-800/60 via-neutral-700/25 to-neutral-600/5" />
     </div>
   );
 }
@@ -587,7 +687,7 @@ function AdSlot({ slot, className = "", label }: { slot: string; className?: str
 
   return (
     <div className={`w-full ${className}`}>
-      <p className="text-center text-[10px] uppercase tracking-wide text-neutral-400 mb-1">{label}</p>
+      <p className="text-center text-[10px] uppercase tracking-wide text-white drop-shadow mb-1">{label}</p>
       {live ? (
         <ins
           className="adsbygoogle block"
@@ -759,6 +859,8 @@ export default function Page() {
     fontFamily: lang === "en" ? "'Montserrat', sans-serif" : "'Noto Sans Arabic', sans-serif",
   };
   const H = "font-extrabold tracking-tight drop-shadow-lg";
+  // Dark label behind text that sits directly on the bright background, so it stays easy to read
+  const CHIP = "inline-block rounded-xl bg-black/70 px-4 py-1";
 
   return (
     <div dir={dir} lang={lang} className="relative min-h-screen text-white p-4">
@@ -788,13 +890,15 @@ export default function Page() {
         {/* Main column */}
         <div className="min-w-0 w-full max-w-4xl">
           {/* Header */}
-          <h1 style={headStyle} className={`${H} text-3xl sm:text-5xl text-center text-white pt-6`}>
-            Pakistan Travel and <span className="text-green-400">Visa Services</span>
-          </h1>
-          <p style={headStyle} className="text-center text-lg font-extrabold text-green-300 drop-shadow mt-1">
-            Paktravel.pk
-          </p>
-          <p className="text-center text-sm text-white drop-shadow mt-1 mb-4">{t("tagline")}</p>
+          <div className="mt-4 mb-4 rounded-2xl bg-black/70 px-4 py-4">
+            <h1 style={headStyle} className={`${H} text-3xl sm:text-5xl text-center text-white`}>
+              Pakistan Travel and <span className="text-green-400">Visa Services</span>
+            </h1>
+            <p style={headStyle} className="text-center text-lg font-extrabold text-green-300 mt-1">
+              Paktravel.pk
+            </p>
+            <p className="text-center text-sm text-white mt-1">{t("tagline")}</p>
+          </div>
 
           {!user && (
             <div className="flex justify-center mb-4">
@@ -835,7 +939,7 @@ export default function Page() {
 
           {!selectedVisa ? (
             <>
-              <h2 style={headStyle} className={`${H} text-2xl mb-3`}>{t("selectCountry")}</h2>
+              <h2 style={headStyle} className={`${H} ${CHIP} text-2xl mb-3`}>{t("selectCountry")}</h2>
               <div className="flex flex-wrap gap-2 mb-6">
                 {countries.map((c) => (
                   <button
@@ -858,7 +962,7 @@ export default function Page() {
 
               <AdSlot slot={SLOT_INLINE} label={t("adLabel")} className="mb-6" />
 
-              <h2 style={headStyle} className={`${H} text-2xl mb-3`}>
+              <h2 style={headStyle} className={`${H} ${CHIP} text-2xl mb-3`}>
                 {t("selectVisa", { country: countryNames[selectedCountry][lang] })}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -889,7 +993,19 @@ export default function Page() {
                   );
                 })}
               </div>
-              <p className="text-xs text-neutral-300 mt-4">{t("feeNote")}</p>
+              <a
+                href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
+                  `Hello, I need visa information for ${countryNames[selectedCountry].en}. I could not find my visa type on the website.`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 block rounded-xl bg-green-600 hover:bg-green-700 px-4 py-3 text-center font-bold text-white"
+              >
+                💬 {t("notSure")}
+              </a>
+              <p className="inline-block rounded-lg bg-black/70 px-3 py-2 text-xs text-white mt-4">
+                {t("feeNote")} {t("reqNote")}
+              </p>
             </>
           ) : (
             <>
@@ -898,7 +1014,7 @@ export default function Page() {
                   setSelectedVisa("");
                   setIsSubmitted(false);
                 }}
-                className="mb-4 text-green-400 hover:text-green-300"
+                className="mb-4 rounded-lg bg-black/70 px-3 py-1 text-green-300 hover:text-green-200"
               >
                 {t("back")}
               </button>
@@ -983,14 +1099,16 @@ export default function Page() {
           {/* No ad on the final WhatsApp step, so nothing distracts from your lead */}
           {!isSubmitted && <AdSlot slot={SLOT_INLINE} label={t("adLabel")} className="mt-8" />}
 
-          <p className="text-center text-xs text-neutral-300 mt-8 max-w-xl mx-auto">{t("disclaimer")}</p>
-          <p className="text-center text-sm text-white drop-shadow mt-4">
-            <a href="/privacy" className="underline mx-3">{t("privacy")}</a>
-            <a href="/contact" className="underline mx-3">{t("contact")}</a>
-          </p>
-          <p className="text-center text-xs text-neutral-100 drop-shadow mt-3 mb-4">
-            © 2026 Pakistan Travel and Visa Services (Paktravel.pk) — {t("footer")}
-          </p>
+          <div className="mt-8 mb-4 mx-auto max-w-xl rounded-xl bg-black/70 p-3 text-center">
+            <p className="text-xs text-neutral-200">{t("disclaimer")}</p>
+            <p className="text-sm text-white mt-3">
+              <a href="/privacy" className="underline mx-3">{t("privacy")}</a>
+              <a href="/contact" className="underline mx-3">{t("contact")}</a>
+            </p>
+            <p className="text-xs text-neutral-300 mt-3">
+              © 2026 Pakistan Travel and Visa Services (Paktravel.pk) — {t("footer")}
+            </p>
+          </div>
         </div>
 
         {/* Right ad rail (large screens only) */}
